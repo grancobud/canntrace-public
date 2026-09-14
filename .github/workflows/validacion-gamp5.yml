@@ -1,0 +1,208 @@
+# ============================================================================
+# CannTrace - Pipeline CI/CD Validado (GAMP5 Cat.5)
+# ============================================================================
+# Este workflow implementa un pipeline validado conforme a GAMP5.
+# Cada ejecucion genera evidencia auditable para IQ/OQ/PQ.
+# Inspirado en: inforlife/process + shtracer + GSTT-CSC/QMS-Template
+# ============================================================================
+
+name: Validacion GAMP5
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  # ============================================================
+  # 1. VERIFICACION DE CODIGO (parte de OQ)
+  # ============================================================
+  verificacion-codigo:
+    name: Verificacion de Codigo
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: src/frontend/canntrace-app/package-lock.json
+
+      - name: Instalar dependencias
+        working-directory: src/frontend/canntrace-app
+        run: npm ci
+
+      - name: TypeScript - Verificacion de tipos
+        working-directory: src/frontend/canntrace-app
+        run: npx tsc --noEmit
+
+      - name: Build de produccion
+        working-directory: src/frontend/canntrace-app
+        run: npm run build
+
+      - name: Guardar artefacto de build
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ github.sha }}
+          path: src/frontend/canntrace-app/dist/
+          retention-days: 90  # Retencion para auditoria
+
+  # ============================================================
+  # 2. VALIDACION DE SCHEMA SQL (parte de IQ)
+  # ============================================================
+  validacion-sql:
+    name: Validacion Schema SQL
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Verificar que schema SQL existe y no esta vacio
+        run: |
+          echo "=== Verificando archivos SQL ==="
+          for f in src/database/migrations/*.sql; do
+            if [ ! -s "$f" ]; then
+              echo "ERROR: $f esta vacio"
+              exit 1
+            fi
+            echo "OK: $f ($(wc -l < "$f") lineas)"
+          done
+
+      - name: Verificar audit trail inmutable en schema
+        run: |
+          echo "=== Verificando controles GAMP5 en SQL ==="
+
+          # Verificar que existe trigger de inmutabilidad
+          grep -q "impedir_modificacion_auditoria" src/database/migrations/002_schema_espanol.sql \
+            && echo "OK: Trigger inmutabilidad audit trail" \
+            || (echo "FALLO: Falta trigger inmutabilidad" && exit 1)
+
+          # Verificar firma electronica
+          grep -q "generar_firma_registro" src/database/migrations/002_schema_espanol.sql \
+            && echo "OK: Firma electronica SHA-256" \
+            || (echo "FALLO: Falta firma electronica" && exit 1)
+
+          # Verificar hash encadenado
+          grep -q "hash_anterior" src/database/migrations/002_schema_espanol.sql \
+            && echo "OK: Hash encadenado (blockchain-lite)" \
+            || (echo "FALLO: Falta hash encadenado" && exit 1)
+
+          # Verificar stock no negativo
+          grep -q "verificar_stock_no_negativo" src/database/migrations/002_schema_espanol.sql \
+            && echo "OK: Constraint stock >= 0" \
+            || (echo "FALLO: Falta constraint stock" && exit 1)
+
+          # Verificar RLS habilitado
+          grep -c "ENABLE ROW LEVEL SECURITY" src/database/migrations/002_schema_espanol.sql | \
+            xargs -I {} sh -c '[ {} -ge 10 ] && echo "OK: RLS habilitado en {} tablas" || (echo "FALLO: RLS insuficiente" && exit 1)'
+
+          echo "=== TODOS LOS CONTROLES GAMP5 VERIFICADOS ==="
+
+  # ============================================================
+  # 3. VERIFICACION DE DOCUMENTACION (parte de VP)
+  # ============================================================
+  verificacion-documentacion:
+    name: Verificacion Documentacion GAMP5
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Verificar documentos obligatorios
+        run: |
+          echo "=== Verificando documentacion GAMP5 ==="
+          DOCS_REQUERIDOS=(
+            "validation/00-plan/VP-001_Plan_de_Validacion.md"
+            "validation/01-requerimientos/URS-001_Especificacion_Requerimientos.md"
+            "validation/04-evaluacion-riesgos/FMEA-001_Evaluacion_Riesgos.md"
+            "validation/07-trazabilidad/TM-001_Matriz_Trazabilidad.md"
+            "validation/09-sops/SOP-001_Uso_del_Sistema.md"
+            "validation/09-sops/SOP-002_Backup_Recuperacion.md"
+            "validation/09-sops/SOP-003_Control_de_Cambios.md"
+            "validation/09-sops/SOP-004_Gestion_Incidentes.md"
+          )
+
+          FALTANTES=0
+          for doc in "${DOCS_REQUERIDOS[@]}"; do
+            if [ -f "$doc" ]; then
+              LINEAS=$(wc -l < "$doc")
+              echo "OK: $doc ($LINEAS lineas)"
+            else
+              echo "FALTA: $doc"
+              FALTANTES=$((FALTANTES + 1))
+            fi
+          done
+
+          if [ $FALTANTES -gt 0 ]; then
+            echo "ERROR: Faltan $FALTANTES documentos obligatorios"
+            exit 1
+          fi
+
+          echo "=== DOCUMENTACION COMPLETA ==="
+
+      - name: Verificar trazabilidad URS -> Tests
+        run: |
+          echo "=== Verificando cobertura de trazabilidad ==="
+
+          # Contar requerimientos en URS
+          URS_COUNT=$(grep -c "^| RF-\|^| RNF-\|^| RR-\|^| RI-\|^| RS-" \
+            validation/01-requerimientos/URS-001_Especificacion_Requerimientos.md || echo 0)
+
+          # Contar entradas en matriz de trazabilidad
+          TM_COUNT=$(grep -c "^| RF-\|^| RNF-\|^| RR-\|^| RI-\|^| RS-" \
+            validation/07-trazabilidad/TM-001_Matriz_Trazabilidad.md || echo 0)
+
+          echo "Requerimientos en URS: $URS_COUNT"
+          echo "Entradas en Matriz: $TM_COUNT"
+
+          if [ "$TM_COUNT" -lt "$URS_COUNT" ]; then
+            echo "ADVERTENCIA: La matriz tiene menos entradas que el URS"
+            echo "Posibles requerimientos sin test asociado"
+          else
+            echo "OK: Cobertura de trazabilidad completa"
+          fi
+
+  # ============================================================
+  # 4. REPORTE DE VALIDACION
+  # ============================================================
+  reporte-validacion:
+    name: Generar Reporte de Validacion
+    needs: [verificacion-codigo, validacion-sql, verificacion-documentacion]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Generar reporte
+        run: |
+          echo "# Reporte de Validacion CI/CD - CannTrace" > reporte-validacion.md
+          echo "" >> reporte-validacion.md
+          echo "**Fecha:** $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> reporte-validacion.md
+          echo "**Commit:** ${{ github.sha }}" >> reporte-validacion.md
+          echo "**Branch:** ${{ github.ref_name }}" >> reporte-validacion.md
+          echo "**Actor:** ${{ github.actor }}" >> reporte-validacion.md
+          echo "**Run ID:** ${{ github.run_id }}" >> reporte-validacion.md
+          echo "" >> reporte-validacion.md
+          echo "## Resultados" >> reporte-validacion.md
+          echo "" >> reporte-validacion.md
+          echo "| Verificacion | Resultado |" >> reporte-validacion.md
+          echo "|---|---|" >> reporte-validacion.md
+          echo "| Codigo (TypeScript + Build) | ${{ needs.verificacion-codigo.result }} |" >> reporte-validacion.md
+          echo "| Schema SQL (GAMP5 controls) | ${{ needs.validacion-sql.result }} |" >> reporte-validacion.md
+          echo "| Documentacion (completitud) | ${{ needs.verificacion-documentacion.result }} |" >> reporte-validacion.md
+          echo "" >> reporte-validacion.md
+          echo "---" >> reporte-validacion.md
+          echo "*Generado automaticamente por el pipeline GAMP5 validado*" >> reporte-validacion.md
+
+          cat reporte-validacion.md
+
+      - name: Guardar reporte como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: reporte-validacion-${{ github.sha }}
+          path: reporte-validacion.md
+          retention-days: 365  # 1 ano de retencion para auditoria

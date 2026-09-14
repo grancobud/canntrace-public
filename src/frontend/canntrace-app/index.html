@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0D6B4E" />
+
+    <!-- Primary SEO -->
+    <title>CannTrace — Trazabilidad Cannabis Medicinal GAMP5</title>
+    <meta name="description" content="Plataforma de trazabilidad seed-to-sale para cannabis medicinal, validada GAMP5 categoria 5. Audit log SHA-256, CoA digital publico, REPROCANN ANMAT y multi-tenancy." />
+    <meta name="keywords" content="cannabis medicinal, trazabilidad, GAMP5, ANMAT, REPROCANN, 21 CFR Part 11, ALCOA+, CoA, seed-to-sale, compliance" />
+    <meta name="author" content="OA Consultora" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://canntrace.pages.dev" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="CannTrace" />
+    <meta property="og:title" content="CannTrace — Trazabilidad Cannabis Medicinal GAMP5" />
+    <meta property="og:description" content="Trazabilidad seed-to-sale validada GAMP5. Audit log criptografico, CoA digital publico y compliance ANMAT/FDA/EMA." />
+    <meta property="og:url" content="https://canntrace.pages.dev" />
+    <meta property="og:image" content="https://canntrace.pages.dev/og-image.svg" />
+    <meta property="og:locale" content="es_AR" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="CannTrace — Trazabilidad Cannabis Medicinal GAMP5" />
+    <meta name="twitter:description" content="Seed-to-sale validado GAMP5. Audit log SHA-256 + CoA publico + REPROCANN." />
+    <meta name="twitter:image" content="https://canntrace.pages.dev/og-image.svg" />
+
+    <!-- PWA / iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="CannTrace" />
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- JSON-LD structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "CannTrace",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "description": "Sistema de trazabilidad seed-to-sale para cannabis medicinal, validado GAMP5.",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "provider": { "@type": "Organization", "name": "OA Consultora", "url": "https://canntrace.pages.dev" }
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" />
+
+    <!-- Dark mode antes del paint (evita flash blanco en primera carga) -->
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('canntrace-dark-mode');
+          var dark = saved === null ? true : saved === 'true';
+          if (dark) document.documentElement.classList.add('dark');
+        } catch (e) { /* fallback: default dark */
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

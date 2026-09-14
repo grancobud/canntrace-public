@@ -1,0 +1,16 @@
+{
+  "name": "ingest-xlsx-cumcs",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Ingesta el xlsx CM-RE-1010 Matriz Consolidada v2 (Storage canntrace-archivos/gamp5/) a las tablas registros_* + xlsx_raw_rows. Idempotente via fingerprint.",
+  "scripts": {
+    "dry-run": "node ingest.mjs --dry-run",
+    "apply": "node ingest.mjs --apply",
+    "reingest": "node ingest.mjs --apply --reingest"
+  },
+  "dependencies": {
+    "exceljs": "^4.4.0",
+    "js-yaml": "^4.1.0"
+  }
+}

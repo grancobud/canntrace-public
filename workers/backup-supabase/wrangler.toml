@@ -1,0 +1,20 @@
+name = "canntrace-backup"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+
+# Cron: Domingo 03:00 UTC (00:00 ARG)
+[triggers]
+crons = ["0 3 * * 0"]
+
+# R2 binding para subir el backup
+[[r2_buckets]]
+binding = "BACKUPS"
+bucket_name = "canntrace-backups"
+
+# Secrets (set con: npx wrangler secret put <name>):
+#   SUPABASE_URL
+#   SUPABASE_SERVICE_KEY (la de service_role, no anon)
+
+# Observability para ver logs
+[observability]
+enabled = true

@@ -1,0 +1,38 @@
+{
+  "name": "CannTrace Dev",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:20",
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "configureZshAsDefaultShell": true
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "Supabase.vscode-supabase-extension",
+        "GitHub.copilot"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+      }
+    }
+  },
+  "forwardPorts": [5173, 5200, 3000],
+  "portsAttributes": {
+    "5200": { "label": "CannTrace (Vite)", "onAutoForward": "openBrowser" }
+  },
+  "postCreateCommand": "cd src/frontend/canntrace-app && npm install --legacy-peer-deps",
+  "remoteEnv": {
+    "CLOUDFLARE_API_TOKEN": "${localEnv:CLOUDFLARE_API_TOKEN}",
+    "SUPABASE_URL": "${localEnv:SUPABASE_URL}",
+    "SUPABASE_ANON_KEY": "${localEnv:SUPABASE_ANON_KEY}",
+    "SUPABASE_PAT": "${localEnv:SUPABASE_PAT}",
+    "SUPABASE_PROJECT_ID": "${localEnv:SUPABASE_PROJECT_ID}"
+  }
+}

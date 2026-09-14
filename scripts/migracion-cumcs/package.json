@@ -1,0 +1,18 @@
+{
+  "name": "canntrace-migracion-cumcs",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Scripts de migracion bulk Excel -> Supabase para CannTrace (P0.3)",
+  "scripts": {
+    "inspect": "node inspect.mjs",
+    "migrate:dry": "node migrate.mjs --dry-run",
+    "migrate:piloto": "node migrate.mjs",
+    "migrate:all": "node migrate.mjs --all"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.103.2",
+    "exceljs": "^4.4.0",
+    "xlsx": "^0.18.5"
+  }
+}

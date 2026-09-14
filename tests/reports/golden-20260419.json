@@ -1,0 +1,3032 @@
+{
+  "generado_en": "2026-04-19T21:59:59.725Z",
+  "resumen": {
+    "total": 50,
+    "passed": 13,
+    "failed": 37,
+    "pass_rate_pct": "26.0",
+    "errores_http": 0,
+    "confianza_avg": "0.175",
+    "latencia_avg_ms": 9258,
+    "latencia_p95_ms": 18390,
+    "follow_ups_disparados": 44,
+    "modelos_usados": [
+      "groq/llama-3.3-70b-versatile",
+      "sambanova/Meta-Llama-3.3-70B-Instruct",
+      "nvidia/meta/llama-3.3-70b-instruct",
+      "github/gpt-4o-mini"
+    ]
+  },
+  "top_field_fails": [
+    [
+      "cantidad",
+      32
+    ],
+    [
+      "confianza>=0.6",
+      11
+    ],
+    [
+      "confianza>=0.7",
+      8
+    ],
+    [
+      "camada",
+      5
+    ],
+    [
+      "confianza>=0.55",
+      4
+    ],
+    [
+      "fecha",
+      2
+    ],
+    [
+      "sistema",
+      2
+    ],
+    [
+      "tipo_operacion",
+      2
+    ],
+    [
+      "confianza>=0.5",
+      2
+    ],
+    [
+      "confianza>=0.4",
+      2
+    ]
+  ],
+  "casos_fallidos": [
+    {
+      "id": "003-trimming-kg",
+      "input": "trimming 4.2kg camada 11 sistema RDWC",
+      "failed": [
+        "fecha"
+      ],
+      "extraccion": {
+        "tipo_operacion": "trimming",
+        "cantidad": 4.2,
+        "camada": "C11",
+        "sistema": "RDWC",
+        "fecha": "2026-04-19",
+        "id_lote": null,
+        "observaciones": null,
+        "confianza": 0.9
+      },
+      "status": 200
+    },
+    {
+      "id": "004-ingreso-insumos-simple",
+      "input": "ingreso 3 kg de fertilizante pro core",
+      "failed": [
+        "cantidad",
+        "camada",
+        "sistema",
+        "confianza>=0.6"
+      ],
+      "extraccion": {
+        "tipo_operacion": "ingreso_insumos",
+        "cantidad": null,
+        "camada": "null",
+        "sistema": "null",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "fertilizante pro core",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "005-planta-madre",
+      "input": "trasplante de planta madre 25.PM10 a coco hoy",
+      "failed": [
+        "id_lote"
+      ],
+      "extraccion": {
+        "tipo_operacion": "planta_madre",
+        "cantidad": 25,
+        "camada": null,
+        "sistema": "COCO",
+        "fecha": "2026-04-19",
+        "id_lote": "PM10",
+        "observaciones": null,
+        "confianza": 0.8
+      },
+      "status": 200
+    },
+    {
+      "id": "006-fertilizacion",
+      "input": "fertilizamos 400 litros pro bloom en flora 1 hoy",
+      "failed": [
+        "cantidad",
+        "confianza>=0.7"
+      ],
+      "extraccion": {
+        "tipo_operacion": "fertilizacion",
+        "cantidad": null,
+        "camada": "null",
+        "sistema": "COCO",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "pro bloom",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "007-utilizacion-insumos",
+      "input": "use 50 bandejas de coco en veget",
+      "failed": [
+        "tipo_operacion",
+        "cantidad",
+        "confianza>=0.5"
+      ],
+      "extraccion": {
+        "tipo_operacion": "vegetativa",
+        "cantidad": null,
+        "camada": "null",
+        "sistema": "COCO",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "bandejas de coco",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "008-baja-stock",
+      "input": "baja de 10 plantas enfermas C12 hoy",
+      "failed": [
+        "cantidad",
+        "confianza>=0.6"
+      ],
+      "extraccion": {
+        "tipo_operacion": "baja_stock",
+        "cantidad": null,
+        "camada": "C12",
+        "sistema": "null",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "enfermas",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "009-vegetativa",
+      "input": "paso a vegetativa 80 clones del C11",
+      "failed": [
+        "cantidad",
+        "confianza>=0.6"
+      ],
+      "extraccion": {
+        "tipo_operacion": "vegetativa",
+        "cantidad": null,
+        "camada": "C11",
+        "sistema": "null",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "clones",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "010-poda",
+      "input": "hice poda de 30 plantas camada 9 flora 2",
+      "failed": [
+        "cantidad",
+        "confianza>=0.6"
+      ],
+      "extraccion": {
+        "tipo_operacion": "poda",
+        "cantidad": null,
+        "camada": "C9",
+        "sistema": "RDWC",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "013-secado",
+      "input": "entro a secado la camada 15 cosechada ayer 12kg verde",
+      "failed": [
+        "fecha",
+        "confianza>=0.55"
+      ],
+      "extraccion": {
+        "tipo_operacion": "secado",
+        "cantidad": null,
+        "camada": "C15",
+        "sistema": "null",
+        "fecha": "2026-04-18",
+        "id_lote": "null",
+        "observaciones": "verde",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "014-cuarentena",
+      "input": "mandamos a cuarentena 3 kg camada 11",
+      "failed": [
+        "cantidad",
+        "confianza>=0.6"
+      ],
+      "extraccion": {
+        "tipo_operacion": "cuarentena",
+        "cantidad": null,
+        "camada": "C11",
+        "sistema": "null",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "016-almacenamiento",
+      "input": "almacenamos 30.18 kg camada 7 en rack A",
+      "failed": [
+        "cantidad",
+        "confianza>=0.6"
+      ],
+      "extraccion": {
+        "tipo_operacion": "almacenamiento",
+        "cantidad": null,
+        "camada": "C7",
+        "sistema": "null",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "rack A",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "017-alias-camada-la7",
+      "input": "cosechamos 100 plantas de la 7 hoy",
+      "failed": [
+        "cantidad",
+        "confianza>=0.7"
+      ],
+      "extraccion": {
+        "tipo_operacion": "cosecha",
+        "cantidad": null,
+        "camada": "C7",
+        "sistema": "null",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "018-alias-camada-sin-c",
+      "input": "carge 40 esquejes camada 9 coco",
+      "failed": [
+        "cantidad",
+        "confianza>=0.7"
+      ],
+      "extraccion": {
+        "tipo_operacion": "esquejado",
+        "cantidad": null,
+        "camada": "C9",
+        "sistema": "COCO",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "019-alias-camada-numero",
+      "input": "cosecha del 12 rdwc 80 plantas",
+      "failed": [
+        "cantidad",
+        "confianza>=0.55"
+      ],
+      "extraccion": {
+        "tipo_operacion": "cosecha",
+        "cantidad": null,
+        "camada": "C12",
+        "sistema": "RDWC",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "020-alias-sistema-sfl1",
+      "input": "trimmeamos 5kg camada 16 en sfl1",
+      "failed": [
+        "cantidad",
+        "confianza>=0.65"
+      ],
+      "extraccion": {
+        "tipo_operacion": "trimming",
+        "cantidad": null,
+        "camada": "C16",
+        "sistema": "COCO",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "021-alias-sistema-sfl2",
+      "input": "ingreso 200 litros pro grow sfl2",
+      "failed": [
+        "cantidad",
+        "confianza>=0.6"
+      ],
+      "extraccion": {
+        "tipo_operacion": "ingreso_insumos",
+        "cantidad": null,
+        "camada": "null",
+        "sistema": "RDWC",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "pro grow",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "023-fecha-explicita-dd-mm",
+      "input": "esquejado 30 esquejes C7 coco el 15/04",
+      "failed": [
+        "cantidad",
+        "confianza>=0.7"
+      ],
+      "extraccion": {
+        "tipo_operacion": "esquejado",
+        "cantidad": null,
+        "camada": "C7",
+        "sistema": "COCO",
+        "fecha": "2026-04-15",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "024-fecha-ayer-alias",
+      "input": "antier cosechamos la camada 11 rdwc 90 plantas",
+      "failed": [
+        "cantidad",
+        "confianza>=0.55"
+      ],
+      "extraccion": {
+        "tipo_operacion": "cosecha",
+        "cantidad": null,
+        "camada": "C11",
+        "sistema": "RDWC",
+        "fecha": "2026-04-17",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "025-con-id-lote",
+      "input": "trimming 8kg lote ALM-C7-RDWC ayer",
+      "failed": [
+        "cantidad",
+        "confianza>=0.7"
+      ],
+      "extraccion": {
+        "tipo_operacion": "trimming",
+        "cantidad": null,
+        "camada": "C7",
+        "sistema": "RDWC",
+        "fecha": "2026-04-18",
+        "id_lote": "ALM-C7-RDWC",
+        "observaciones": null,
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "026-con-id-lote-formato-CL",
+      "input": "esquejado clonacion CL11 60 clones hoy",
+      "failed": [
+        "cantidad",
+        "confianza>=0.7"
+      ],
+      "extraccion": {
+        "tipo_operacion": "esquejado",
+        "cantidad": null,
+        "camada": "C11",
+        "sistema": "null",
+        "fecha": "2026-04-19",
+        "id_lote": "CL11",
+        "observaciones": "clonacion",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "027-multiple-campos-complejo",
+      "input": "Juan cosecho 63 plantas PETE HOPE C11 flora 2 fresco 22kg el 18/04 codigo 25.SF2.FL1-8.C11",
+      "failed": [
+        "cantidad",
+        "confianza>=0.7"
+      ],
+      "extraccion": {
+        "tipo_operacion": "cosecha",
+        "cantidad": null,
+        "camada": "C11",
+        "sistema": "RDWC",
+        "fecha": "2026-04-18",
+        "id_lote": "25.SF2.FL1-8.C11",
+        "observaciones": "fresco 22kg",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "028-sin-cantidad-followup",
+      "input": "cosechamos C7 hoy",
+      "failed": [
+        "confianza>=0.4"
+      ],
+      "extraccion": {
+        "tipo_operacion": "cosecha",
+        "cantidad": null,
+        "camada": "C7",
+        "sistema": "null",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "029-sin-camada-followup",
+      "input": "carge 30 esquejes coco ayer",
+      "failed": [
+        "cantidad",
+        "camada",
+        "confianza>=0.4"
+      ],
+      "extraccion": {
+        "tipo_operacion": "esquejado",
+        "cantidad": null,
+        "camada": "null",
+        "sistema": "COCO",
+        "fecha": "2026-04-18",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "030-sin-tipo-ambiguo",
+      "input": "algo raro paso en la sala",
+      "failed": [
+        "tipo_operacion",
+        "camada",
+        "sistema"
+      ],
+      "extraccion": {
+        "tipo_operacion": "null",
+        "cantidad": null,
+        "camada": "null",
+        "sistema": "null",
+        "fecha": "null",
+        "id_lote": "null",
+        "observaciones": "algo raro paso en la sala",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "031-solo-cantidad-ambiguo",
+      "input": "80 plantas",
+      "failed": [
+        "cantidad"
+      ],
+      "extraccion": {
+        "tipo_operacion": null,
+        "cantidad": null,
+        "camada": null,
+        "sistema": null,
+        "fecha": null,
+        "id_lote": null,
+        "observaciones": null,
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "034-numeros-en-texto",
+      "input": "carge 100 esquejes en 2026 en flora 2 camada 15",
+      "failed": [
+        "cantidad",
+        "confianza>=0.6"
+      ],
+      "extraccion": {
+        "tipo_operacion": "esquejado",
+        "cantidad": null,
+        "camada": "C15",
+        "sistema": "RDWC",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "035-typo-carge",
+      "input": "cargue 45 esquejes C11 coco hoy",
+      "failed": [
+        "cantidad",
+        "confianza>=0.75"
+      ],
+      "extraccion": {
+        "tipo_operacion": "esquejado",
+        "cantidad": null,
+        "camada": "C11",
+        "sistema": "COCO",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "036-typo-cortamos",
+      "input": "cortamos 70 plantas C12 hoy",
+      "failed": [
+        "cantidad",
+        "confianza>=0.6"
+      ],
+      "extraccion": {
+        "tipo_operacion": "cosecha",
+        "cantidad": null,
+        "camada": "C12",
+        "sistema": "null",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "037-typo-manicuramos",
+      "input": "manicuramos 3kg camada 15",
+      "failed": [
+        "cantidad",
+        "confianza>=0.55"
+      ],
+      "extraccion": {
+        "tipo_operacion": "trimming",
+        "cantidad": null,
+        "camada": "C15",
+        "sistema": "null",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "038-c8-invalida",
+      "input": "cosechamos 50 plantas C8 hoy",
+      "failed": [
+        "cantidad",
+        "camada"
+      ],
+      "extraccion": {
+        "tipo_operacion": "cosecha",
+        "cantidad": null,
+        "camada": "null",
+        "sistema": "null",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "039-c10-invalida",
+      "input": "esquejado 40 C10 coco",
+      "failed": [
+        "cantidad",
+        "camada"
+      ],
+      "extraccion": {
+        "tipo_operacion": "esquejado",
+        "cantidad": null,
+        "camada": "C10",
+        "sistema": "COCO",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "043-observaciones-largas",
+      "input": "cosechamos 80 plantas C15 rdwc hoy peso fresco 30kg en buenas condiciones sanitarias sin plagas detectadas responsable Juan Perez lote 25.SF2.FL1-8-C15",
+      "failed": [
+        "cantidad",
+        "confianza>=0.75"
+      ],
+      "extraccion": {
+        "tipo_operacion": "cosecha",
+        "cantidad": null,
+        "camada": "C15",
+        "sistema": "RDWC",
+        "fecha": "2026-04-19",
+        "id_lote": "25.SF2.FL1-8-C15",
+        "observaciones": "peso fresco 30kg en buenas condiciones sanitarias sin plagas detectadas responsable Juan Perez",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "044-fecha-sin-anio",
+      "input": "cosechamos 40 plantas C7 el 3 de abril",
+      "failed": [
+        "cantidad",
+        "confianza>=0.6"
+      ],
+      "extraccion": {
+        "tipo_operacion": "cosecha",
+        "cantidad": null,
+        "camada": "C7",
+        "sistema": "null",
+        "fecha": "2026-04-03",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "045-ingles-mezcla",
+      "input": "harvested 50 plants C11 today",
+      "failed": [
+        "cantidad",
+        "confianza>=0.6"
+      ],
+      "extraccion": {
+        "tipo_operacion": "cosecha",
+        "cantidad": null,
+        "camada": "C11",
+        "sistema": "null",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "046-variedad-explicita",
+      "input": "cosecha pete hope 60 plantas C7 flora 1 ayer",
+      "failed": [
+        "cantidad",
+        "confianza>=0.7"
+      ],
+      "extraccion": {
+        "tipo_operacion": "cosecha",
+        "cantidad": null,
+        "camada": "C7",
+        "sistema": "COCO",
+        "fecha": "2026-04-18",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "047-varios-sistemas",
+      "input": "fertilizamos flora 1 y flora 2 200 litros pro grow",
+      "failed": [
+        "cantidad"
+      ],
+      "extraccion": {
+        "tipo_operacion": "fertilizacion",
+        "cantidad": null,
+        "camada": "null",
+        "sistema": "null",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "pro grow",
+        "confianza": 0
+      },
+      "status": 200
+    },
+    {
+      "id": "048-punctuacion-cero",
+      "input": "esquejado,C7,coco,hoy,45",
+      "failed": [
+        "cantidad",
+        "confianza>=0.5"
+      ],
+      "extraccion": {
+        "tipo_operacion": "esquejado",
+        "cantidad": null,
+        "camada": "C7",
+        "sistema": "COCO",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "status": 200
+    }
+  ],
+  "todos_los_resultados": [
+    {
+      "id": "001-esquejado-basico",
+      "input": "carge 50 esquejes C7 coco hoy",
+      "status": 200,
+      "elapsed_ms": 1556,
+      "modelo_usado": "groq/llama-3.3-70b-versatile",
+      "confianza": 0.95,
+      "extraccion": {
+        "tipo_operacion": "esquejado",
+        "cantidad": 50,
+        "camada": "C7",
+        "sistema": "COCO",
+        "fecha": "2026-04-19",
+        "id_lote": null,
+        "observaciones": null,
+        "confianza": 0.95
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": true
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "sistema",
+          "ok": true
+        },
+        {
+          "name": "fecha",
+          "ok": true
+        },
+        {
+          "name": "id_lote",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.85",
+          "ok": true
+        },
+        {
+          "name": "follow_up",
+          "ok": true
+        }
+      ],
+      "failed": [],
+      "ok": true
+    },
+    {
+      "id": "002-cosecha-flora2",
+      "input": "cosechamos 120 plantas de la 15 en flora 2 ayer peso verde 45 kilos",
+      "status": 200,
+      "elapsed_ms": 1033,
+      "modelo_usado": "groq/llama-3.3-70b-versatile",
+      "confianza": 0.9,
+      "extraccion": {
+        "tipo_operacion": "cosecha",
+        "cantidad": 120,
+        "camada": "C15",
+        "sistema": "RDWC",
+        "fecha": "2026-04-18",
+        "id_lote": null,
+        "observaciones": "peso verde 45 kilos",
+        "confianza": 0.9
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": true
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "sistema",
+          "ok": true
+        },
+        {
+          "name": "fecha",
+          "ok": true
+        },
+        {
+          "name": "id_lote",
+          "ok": true
+        },
+        {
+          "name": "observaciones_contains",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.75",
+          "ok": true
+        },
+        {
+          "name": "follow_up",
+          "ok": true
+        }
+      ],
+      "failed": [],
+      "ok": true
+    },
+    {
+      "id": "003-trimming-kg",
+      "input": "trimming 4.2kg camada 11 sistema RDWC",
+      "status": 200,
+      "elapsed_ms": 870,
+      "modelo_usado": "groq/llama-3.3-70b-versatile",
+      "confianza": 0.9,
+      "extraccion": {
+        "tipo_operacion": "trimming",
+        "cantidad": 4.2,
+        "camada": "C11",
+        "sistema": "RDWC",
+        "fecha": "2026-04-19",
+        "id_lote": null,
+        "observaciones": null,
+        "confianza": 0.9
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": true
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "sistema",
+          "ok": true
+        },
+        {
+          "name": "fecha",
+          "ok": false
+        },
+        {
+          "name": "confianza>=0.7",
+          "ok": true
+        },
+        {
+          "name": "follow_up",
+          "ok": true
+        }
+      ],
+      "failed": [
+        "fecha"
+      ],
+      "ok": false
+    },
+    {
+      "id": "004-ingreso-insumos-simple",
+      "input": "ingreso 3 kg de fertilizante pro core",
+      "status": 200,
+      "elapsed_ms": 3362,
+      "modelo_usado": "sambanova/Meta-Llama-3.3-70B-Instruct",
+      "confianza": 0,
+      "follow_up": "Che, ¿de que camada y sistema fue el ingreso de esos 3 kg de fertilizante?",
+      "extraccion": {
+        "tipo_operacion": "ingreso_insumos",
+        "cantidad": null,
+        "camada": "null",
+        "sistema": "null",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "fertilizante pro core",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "camada",
+          "ok": false
+        },
+        {
+          "name": "sistema",
+          "ok": false
+        },
+        {
+          "name": "fecha",
+          "ok": true
+        },
+        {
+          "name": "observaciones_contains",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.6",
+          "ok": false
+        }
+      ],
+      "failed": [
+        "cantidad",
+        "camada",
+        "sistema",
+        "confianza>=0.6"
+      ],
+      "ok": false
+    },
+    {
+      "id": "005-planta-madre",
+      "input": "trasplante de planta madre 25.PM10 a coco hoy",
+      "status": 200,
+      "elapsed_ms": 4708,
+      "modelo_usado": "sambanova/Meta-Llama-3.3-70B-Instruct",
+      "confianza": 0.8,
+      "follow_up": "Che, ¿de que camada es la PM10?",
+      "extraccion": {
+        "tipo_operacion": "planta_madre",
+        "cantidad": 25,
+        "camada": null,
+        "sistema": "COCO",
+        "fecha": "2026-04-19",
+        "id_lote": "PM10",
+        "observaciones": null,
+        "confianza": 0.8
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "sistema",
+          "ok": true
+        },
+        {
+          "name": "fecha",
+          "ok": true
+        },
+        {
+          "name": "id_lote",
+          "ok": false
+        },
+        {
+          "name": "confianza>=0.6",
+          "ok": true
+        }
+      ],
+      "failed": [
+        "id_lote"
+      ],
+      "ok": false
+    },
+    {
+      "id": "006-fertilizacion",
+      "input": "fertilizamos 400 litros pro bloom en flora 1 hoy",
+      "status": 200,
+      "elapsed_ms": 5984,
+      "modelo_usado": "sambanova/Meta-Llama-3.3-70B-Instruct",
+      "confianza": 0,
+      "follow_up": "Che, ¿cuántas plantas se fertilizaron con esos 400 litros?",
+      "extraccion": {
+        "tipo_operacion": "fertilizacion",
+        "cantidad": null,
+        "camada": "null",
+        "sistema": "COCO",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "pro bloom",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "sistema",
+          "ok": true
+        },
+        {
+          "name": "fecha",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.7",
+          "ok": false
+        }
+      ],
+      "failed": [
+        "cantidad",
+        "confianza>=0.7"
+      ],
+      "ok": false
+    },
+    {
+      "id": "007-utilizacion-insumos",
+      "input": "use 50 bandejas de coco en veget",
+      "status": 200,
+      "elapsed_ms": 5222,
+      "modelo_usado": "sambanova/Meta-Llama-3.3-70B-Instruct",
+      "confianza": 0,
+      "follow_up": "Che, ¿cuantas plantas se extrajeron en total en esa operación?",
+      "extraccion": {
+        "tipo_operacion": "vegetativa",
+        "cantidad": null,
+        "camada": "null",
+        "sistema": "COCO",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "bandejas de coco",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": false
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "confianza>=0.5",
+          "ok": false
+        }
+      ],
+      "failed": [
+        "tipo_operacion",
+        "cantidad",
+        "confianza>=0.5"
+      ],
+      "ok": false
+    },
+    {
+      "id": "008-baja-stock",
+      "input": "baja de 10 plantas enfermas C12 hoy",
+      "status": 200,
+      "elapsed_ms": 5321,
+      "modelo_usado": "sambanova/Meta-Llama-3.3-70B-Instruct",
+      "confianza": 0,
+      "follow_up": "Che, ¿cuál es la cantidad exacta de stock que se dio de baja?",
+      "extraccion": {
+        "tipo_operacion": "baja_stock",
+        "cantidad": null,
+        "camada": "C12",
+        "sistema": "null",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "enfermas",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "fecha",
+          "ok": true
+        },
+        {
+          "name": "observaciones_contains",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.6",
+          "ok": false
+        }
+      ],
+      "failed": [
+        "cantidad",
+        "confianza>=0.6"
+      ],
+      "ok": false
+    },
+    {
+      "id": "009-vegetativa",
+      "input": "paso a vegetativa 80 clones del C11",
+      "status": 200,
+      "elapsed_ms": 6206,
+      "modelo_usado": "sambanova/Meta-Llama-3.3-70B-Instruct",
+      "confianza": 0,
+      "follow_up": "¿Cuántos clones se lograron realmente?",
+      "extraccion": {
+        "tipo_operacion": "vegetativa",
+        "cantidad": null,
+        "camada": "C11",
+        "sistema": "null",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "clones",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.6",
+          "ok": false
+        }
+      ],
+      "failed": [
+        "cantidad",
+        "confianza>=0.6"
+      ],
+      "ok": false
+    },
+    {
+      "id": "010-poda",
+      "input": "hice poda de 30 plantas camada 9 flora 2",
+      "status": 200,
+      "elapsed_ms": 6320,
+      "modelo_usado": "sambanova/Meta-Llama-3.3-70B-Instruct",
+      "confianza": 0,
+      "follow_up": "Che, ¿cuántas horas de poda se realizaron en total?",
+      "extraccion": {
+        "tipo_operacion": "poda",
+        "cantidad": null,
+        "camada": "C9",
+        "sistema": "RDWC",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "sistema",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.6",
+          "ok": false
+        }
+      ],
+      "failed": [
+        "cantidad",
+        "confianza>=0.6"
+      ],
+      "ok": false
+    },
+    {
+      "id": "011-floracion",
+      "input": "pase a floracion la camada 7 coco hoy",
+      "status": 200,
+      "elapsed_ms": 6695,
+      "modelo_usado": "sambanova/Meta-Llama-3.3-70B-Instruct",
+      "confianza": 0.8,
+      "follow_up": "Che, ¿cuántas plantas se pasaron a floración?",
+      "extraccion": {
+        "tipo_operacion": "floracion",
+        "cantidad": null,
+        "camada": "C7",
+        "sistema": "COCO",
+        "fecha": "2026-04-19",
+        "id_lote": null,
+        "observaciones": null,
+        "confianza": 0.8
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "sistema",
+          "ok": true
+        },
+        {
+          "name": "fecha",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.6",
+          "ok": true
+        }
+      ],
+      "failed": [],
+      "ok": true
+    },
+    {
+      "id": "012-control-plagas",
+      "input": "aplicamos neem en toda flora 2 contra trips",
+      "status": 200,
+      "elapsed_ms": 6390,
+      "modelo_usado": "sambanova/Meta-Llama-3.3-70B-Instruct",
+      "confianza": 0.8,
+      "follow_up": "Che, ¿cuánto neem se aplicó y a qué camada de Flora 2?",
+      "extraccion": {
+        "tipo_operacion": "control_plagas",
+        "cantidad": null,
+        "camada": null,
+        "sistema": "RDWC",
+        "fecha": "2026-04-19",
+        "id_lote": null,
+        "observaciones": "neem contra trips",
+        "confianza": 0.8
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "sistema",
+          "ok": true
+        },
+        {
+          "name": "fecha",
+          "ok": true
+        },
+        {
+          "name": "observaciones_contains",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.6",
+          "ok": true
+        }
+      ],
+      "failed": [],
+      "ok": true
+    },
+    {
+      "id": "013-secado",
+      "input": "entro a secado la camada 15 cosechada ayer 12kg verde",
+      "status": 200,
+      "elapsed_ms": 4431,
+      "modelo_usado": "sambanova/Meta-Llama-3.3-70B-Instruct",
+      "confianza": 0,
+      "follow_up": "¿Cuánto pesó después del secado?",
+      "extraccion": {
+        "tipo_operacion": "secado",
+        "cantidad": null,
+        "camada": "C15",
+        "sistema": "null",
+        "fecha": "2026-04-18",
+        "id_lote": "null",
+        "observaciones": "verde",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "fecha",
+          "ok": false
+        },
+        {
+          "name": "confianza>=0.55",
+          "ok": false
+        }
+      ],
+      "failed": [
+        "fecha",
+        "confianza>=0.55"
+      ],
+      "ok": false
+    },
+    {
+      "id": "014-cuarentena",
+      "input": "mandamos a cuarentena 3 kg camada 11",
+      "status": 200,
+      "elapsed_ms": 5588,
+      "modelo_usado": "sambanova/Meta-Llama-3.3-70B-Instruct",
+      "confianza": 0,
+      "follow_up": "Genial, gracias por la info. ¿Cuál es el sistema que se utilizó para la cuarentena?",
+      "extraccion": {
+        "tipo_operacion": "cuarentena",
+        "cantidad": null,
+        "camada": "C11",
+        "sistema": "null",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.6",
+          "ok": false
+        }
+      ],
+      "failed": [
+        "cantidad",
+        "confianza>=0.6"
+      ],
+      "ok": false
+    },
+    {
+      "id": "015-fraccionamiento",
+      "input": "fraccionamos 69 bolsas de 437 gramos camada 7",
+      "status": 200,
+      "elapsed_ms": 5465,
+      "modelo_usado": "sambanova/Meta-Llama-3.3-70B-Instruct",
+      "confianza": 0.8,
+      "extraccion": {
+        "tipo_operacion": "fraccionamiento",
+        "cantidad": 69,
+        "camada": "C7",
+        "sistema": null,
+        "fecha": "2026-04-19",
+        "id_lote": null,
+        "observaciones": "437 gramos",
+        "confianza": 0.8
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": true
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "observaciones_contains",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.6",
+          "ok": true
+        }
+      ],
+      "failed": [],
+      "ok": true
+    },
+    {
+      "id": "016-almacenamiento",
+      "input": "almacenamos 30.18 kg camada 7 en rack A",
+      "status": 200,
+      "elapsed_ms": 8273,
+      "modelo_usado": "sambanova/Meta-Llama-3.3-70B-Instruct",
+      "confianza": 0,
+      "follow_up": "Genial, gracias por la info. ¿Cuál es el sistema que se utilizó para el almacenamiento?",
+      "extraccion": {
+        "tipo_operacion": "almacenamiento",
+        "cantidad": null,
+        "camada": "C7",
+        "sistema": "null",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "rack A",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "observaciones_contains",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.6",
+          "ok": false
+        }
+      ],
+      "failed": [
+        "cantidad",
+        "confianza>=0.6"
+      ],
+      "ok": false
+    },
+    {
+      "id": "017-alias-camada-la7",
+      "input": "cosechamos 100 plantas de la 7 hoy",
+      "status": 200,
+      "elapsed_ms": 25991,
+      "modelo_usado": "sambanova/Meta-Llama-3.3-70B-Instruct",
+      "confianza": 0,
+      "follow_up": "Genial, gracias por la info, pero me dijiste que la cantidad es 100, ¿eso es en kilos o unidades?",
+      "extraccion": {
+        "tipo_operacion": "cosecha",
+        "cantidad": null,
+        "camada": "C7",
+        "sistema": "null",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "fecha",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.7",
+          "ok": false
+        }
+      ],
+      "failed": [
+        "cantidad",
+        "confianza>=0.7"
+      ],
+      "ok": false
+    },
+    {
+      "id": "018-alias-camada-sin-c",
+      "input": "carge 40 esquejes camada 9 coco",
+      "status": 200,
+      "elapsed_ms": 8599,
+      "modelo_usado": "sambanova/Meta-Llama-3.3-70B-Instruct",
+      "confianza": 0,
+      "follow_up": "Che, ¿cuántos esquejes se cargaron en total en la operación?",
+      "extraccion": {
+        "tipo_operacion": "esquejado",
+        "cantidad": null,
+        "camada": "C9",
+        "sistema": "COCO",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "sistema",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.7",
+          "ok": false
+        }
+      ],
+      "failed": [
+        "cantidad",
+        "confianza>=0.7"
+      ],
+      "ok": false
+    },
+    {
+      "id": "019-alias-camada-numero",
+      "input": "cosecha del 12 rdwc 80 plantas",
+      "status": 200,
+      "elapsed_ms": 5103,
+      "modelo_usado": "sambanova/Meta-Llama-3.3-70B-Instruct",
+      "confianza": 0,
+      "follow_up": "Che, ¿cuántas plantas se cosecharon en total en la camada C12?",
+      "extraccion": {
+        "tipo_operacion": "cosecha",
+        "cantidad": null,
+        "camada": "C12",
+        "sistema": "RDWC",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "sistema",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.55",
+          "ok": false
+        }
+      ],
+      "failed": [
+        "cantidad",
+        "confianza>=0.55"
+      ],
+      "ok": false
+    },
+    {
+      "id": "020-alias-sistema-sfl1",
+      "input": "trimmeamos 5kg camada 16 en sfl1",
+      "status": 200,
+      "elapsed_ms": 8119,
+      "modelo_usado": "sambanova/Meta-Llama-3.3-70B-Instruct",
+      "confianza": 0,
+      "follow_up": "Che, ¿cuánto pesaron las plantas después del trimming?",
+      "extraccion": {
+        "tipo_operacion": "trimming",
+        "cantidad": null,
+        "camada": "C16",
+        "sistema": "COCO",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "sistema",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.65",
+          "ok": false
+        }
+      ],
+      "failed": [
+        "cantidad",
+        "confianza>=0.65"
+      ],
+      "ok": false
+    },
+    {
+      "id": "021-alias-sistema-sfl2",
+      "input": "ingreso 200 litros pro grow sfl2",
+      "status": 200,
+      "elapsed_ms": 3139,
+      "modelo_usado": "sambanova/Meta-Llama-3.3-70B-Instruct",
+      "confianza": 0,
+      "follow_up": "Che, ¿cuántos litros de pro grow SFL2 ingresaste exactamente y a qué camada?",
+      "extraccion": {
+        "tipo_operacion": "ingreso_insumos",
+        "cantidad": null,
+        "camada": "null",
+        "sistema": "RDWC",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "pro grow",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "sistema",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.6",
+          "ok": false
+        }
+      ],
+      "failed": [
+        "cantidad",
+        "confianza>=0.6"
+      ],
+      "ok": false
+    },
+    {
+      "id": "022-alias-sistema-hidro",
+      "input": "cosecha hidroponia camada 11 40 plantas",
+      "status": 200,
+      "elapsed_ms": 18390,
+      "modelo_usado": "sambanova/Meta-Llama-3.3-70B-Instruct",
+      "confianza": 0.8,
+      "extraccion": {
+        "tipo_operacion": "cosecha",
+        "cantidad": 40,
+        "camada": "C11",
+        "sistema": "RDWC",
+        "fecha": "2026-04-19",
+        "id_lote": null,
+        "observaciones": null,
+        "confianza": 0.8
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": true
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "sistema",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.55",
+          "ok": true
+        }
+      ],
+      "failed": [],
+      "ok": true
+    },
+    {
+      "id": "023-fecha-explicita-dd-mm",
+      "input": "esquejado 30 esquejes C7 coco el 15/04",
+      "status": 200,
+      "elapsed_ms": 5638,
+      "modelo_usado": "sambanova/Meta-Llama-3.3-70B-Instruct",
+      "confianza": 0,
+      "follow_up": "Che, ¿cuántos esquejes se lograron realmente?",
+      "extraccion": {
+        "tipo_operacion": "esquejado",
+        "cantidad": null,
+        "camada": "C7",
+        "sistema": "COCO",
+        "fecha": "2026-04-15",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "sistema",
+          "ok": true
+        },
+        {
+          "name": "fecha",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.7",
+          "ok": false
+        }
+      ],
+      "failed": [
+        "cantidad",
+        "confianza>=0.7"
+      ],
+      "ok": false
+    },
+    {
+      "id": "024-fecha-ayer-alias",
+      "input": "antier cosechamos la camada 11 rdwc 90 plantas",
+      "status": 200,
+      "elapsed_ms": 9732,
+      "modelo_usado": "sambanova/Meta-Llama-3.3-70B-Instruct",
+      "confianza": 0,
+      "follow_up": "Che, ¿cuántas plantas de la camada C11 se cosecharon exactamente?",
+      "extraccion": {
+        "tipo_operacion": "cosecha",
+        "cantidad": null,
+        "camada": "C11",
+        "sistema": "RDWC",
+        "fecha": "2026-04-17",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "sistema",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.55",
+          "ok": false
+        }
+      ],
+      "failed": [
+        "cantidad",
+        "confianza>=0.55"
+      ],
+      "ok": false
+    },
+    {
+      "id": "025-con-id-lote",
+      "input": "trimming 8kg lote ALM-C7-RDWC ayer",
+      "status": 200,
+      "elapsed_ms": 7304,
+      "modelo_usado": "sambanova/Meta-Llama-3.3-70B-Instruct",
+      "confianza": 0,
+      "follow_up": "Che, ¿cuánto pesó el lote después del trimming?",
+      "extraccion": {
+        "tipo_operacion": "trimming",
+        "cantidad": null,
+        "camada": "C7",
+        "sistema": "RDWC",
+        "fecha": "2026-04-18",
+        "id_lote": "ALM-C7-RDWC",
+        "observaciones": null,
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "fecha",
+          "ok": true
+        },
+        {
+          "name": "id_lote",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.7",
+          "ok": false
+        }
+      ],
+      "failed": [
+        "cantidad",
+        "confianza>=0.7"
+      ],
+      "ok": false
+    },
+    {
+      "id": "026-con-id-lote-formato-CL",
+      "input": "esquejado clonacion CL11 60 clones hoy",
+      "status": 200,
+      "elapsed_ms": 9109,
+      "modelo_usado": "nvidia/meta/llama-3.3-70b-instruct",
+      "confianza": 0,
+      "follow_up": "Che, ¿cuántos clones se esquejaron en total en la camada C11?",
+      "extraccion": {
+        "tipo_operacion": "esquejado",
+        "cantidad": null,
+        "camada": "C11",
+        "sistema": "null",
+        "fecha": "2026-04-19",
+        "id_lote": "CL11",
+        "observaciones": "clonacion",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "fecha",
+          "ok": true
+        },
+        {
+          "name": "id_lote",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.7",
+          "ok": false
+        }
+      ],
+      "failed": [
+        "cantidad",
+        "confianza>=0.7"
+      ],
+      "ok": false
+    },
+    {
+      "id": "027-multiple-campos-complejo",
+      "input": "Juan cosecho 63 plantas PETE HOPE C11 flora 2 fresco 22kg el 18/04 codigo 25.SF2.FL1-8.C11",
+      "status": 200,
+      "elapsed_ms": 10475,
+      "modelo_usado": "nvidia/meta/llama-3.3-70b-instruct",
+      "confianza": 0,
+      "follow_up": "Che, ¿cuánto pesó la cosecha en total?",
+      "extraccion": {
+        "tipo_operacion": "cosecha",
+        "cantidad": null,
+        "camada": "C11",
+        "sistema": "RDWC",
+        "fecha": "2026-04-18",
+        "id_lote": "25.SF2.FL1-8.C11",
+        "observaciones": "fresco 22kg",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "sistema",
+          "ok": true
+        },
+        {
+          "name": "fecha",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.7",
+          "ok": false
+        }
+      ],
+      "failed": [
+        "cantidad",
+        "confianza>=0.7"
+      ],
+      "ok": false
+    },
+    {
+      "id": "028-sin-cantidad-followup",
+      "input": "cosechamos C7 hoy",
+      "status": 200,
+      "elapsed_ms": 14230,
+      "modelo_usado": "nvidia/meta/llama-3.3-70b-instruct",
+      "confianza": 0,
+      "follow_up": "¿Cuántas unidades se cosecharon?",
+      "extraccion": {
+        "tipo_operacion": "cosecha",
+        "cantidad": null,
+        "camada": "C7",
+        "sistema": "null",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": true
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "fecha",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.4",
+          "ok": false
+        },
+        {
+          "name": "follow_up",
+          "ok": true
+        }
+      ],
+      "failed": [
+        "confianza>=0.4"
+      ],
+      "ok": false
+    },
+    {
+      "id": "029-sin-camada-followup",
+      "input": "carge 30 esquejes coco ayer",
+      "status": 200,
+      "elapsed_ms": 8723,
+      "modelo_usado": "nvidia/meta/llama-3.3-70b-instruct",
+      "confianza": 0,
+      "follow_up": "Che, ¿de qué camada fueron esos 30 esquejes?",
+      "extraccion": {
+        "tipo_operacion": "esquejado",
+        "cantidad": null,
+        "camada": "null",
+        "sistema": "COCO",
+        "fecha": "2026-04-18",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "camada",
+          "ok": false
+        },
+        {
+          "name": "sistema",
+          "ok": true
+        },
+        {
+          "name": "fecha",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.4",
+          "ok": false
+        },
+        {
+          "name": "follow_up",
+          "ok": true
+        }
+      ],
+      "failed": [
+        "cantidad",
+        "camada",
+        "confianza>=0.4"
+      ],
+      "ok": false
+    },
+    {
+      "id": "030-sin-tipo-ambiguo",
+      "input": "algo raro paso en la sala",
+      "status": 200,
+      "elapsed_ms": 10643,
+      "modelo_usado": "nvidia/meta/llama-3.3-70b-instruct",
+      "confianza": 0,
+      "follow_up": "¿Qué pasó exactamente en la sala y cuántas plantas se vieron afectadas?",
+      "extraccion": {
+        "tipo_operacion": "null",
+        "cantidad": null,
+        "camada": "null",
+        "sistema": "null",
+        "fecha": "null",
+        "id_lote": "null",
+        "observaciones": "algo raro paso en la sala",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": false
+        },
+        {
+          "name": "cantidad",
+          "ok": true
+        },
+        {
+          "name": "camada",
+          "ok": false
+        },
+        {
+          "name": "sistema",
+          "ok": false
+        },
+        {
+          "name": "confianza>=0",
+          "ok": true
+        },
+        {
+          "name": "confianza<=0.3",
+          "ok": true
+        },
+        {
+          "name": "follow_up",
+          "ok": true
+        }
+      ],
+      "failed": [
+        "tipo_operacion",
+        "camada",
+        "sistema"
+      ],
+      "ok": false
+    },
+    {
+      "id": "031-solo-cantidad-ambiguo",
+      "input": "80 plantas",
+      "status": 200,
+      "elapsed_ms": 14912,
+      "modelo_usado": "nvidia/meta/llama-3.3-70b-instruct",
+      "confianza": 0,
+      "follow_up": "Che, ¿de qué camada son esas 80 plantas y qué tipo de operación se realizó?",
+      "extraccion": {
+        "tipo_operacion": null,
+        "cantidad": null,
+        "camada": null,
+        "sistema": null,
+        "fecha": null,
+        "id_lote": null,
+        "observaciones": null,
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "confianza<=0.5",
+          "ok": true
+        },
+        {
+          "name": "follow_up",
+          "ok": true
+        }
+      ],
+      "failed": [
+        "cantidad"
+      ],
+      "ok": false
+    },
+    {
+      "id": "032-confianza-baja-confuso",
+      "input": "trabaje con plantas y cosas",
+      "status": 200,
+      "elapsed_ms": 23282,
+      "modelo_usado": "nvidia/meta/llama-3.3-70b-instruct",
+      "confianza": 0.1,
+      "follow_up": "Che, ¿de qué tipo de operación se trata y cuántas plantas fueron, en qué camada?",
+      "extraccion": {
+        "tipo_operacion": null,
+        "cantidad": null,
+        "camada": null,
+        "sistema": null,
+        "fecha": null,
+        "id_lote": null,
+        "observaciones": "trabaje con plantas y cosas",
+        "confianza": 0.1
+      },
+      "checks": [
+        {
+          "name": "confianza<=0.3",
+          "ok": true
+        },
+        {
+          "name": "follow_up",
+          "ok": true
+        }
+      ],
+      "failed": [],
+      "ok": true
+    },
+    {
+      "id": "033-mezcla-camadas",
+      "input": "cosecha parcial C7 y C9 flora 2",
+      "status": 200,
+      "elapsed_ms": 8628,
+      "modelo_usado": "nvidia/meta/llama-3.3-70b-instruct",
+      "confianza": 0,
+      "follow_up": "Che, ¿cuántas plantas se cosecharon en total?",
+      "extraccion": {
+        "tipo_operacion": "cosecha",
+        "cantidad": null,
+        "camada": "C7 y C9",
+        "sistema": "RDWC",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "parcial",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "sistema",
+          "ok": true
+        },
+        {
+          "name": "confianza<=0.6",
+          "ok": true
+        },
+        {
+          "name": "follow_up",
+          "ok": true
+        }
+      ],
+      "failed": [],
+      "ok": true
+    },
+    {
+      "id": "034-numeros-en-texto",
+      "input": "carge 100 esquejes en 2026 en flora 2 camada 15",
+      "status": 200,
+      "elapsed_ms": 15601,
+      "modelo_usado": "nvidia/meta/llama-3.3-70b-instruct",
+      "confianza": 0,
+      "follow_up": "Che, ¿cuántos esquejes se esquejaron en total en la camada C15?",
+      "extraccion": {
+        "tipo_operacion": "esquejado",
+        "cantidad": null,
+        "camada": "C15",
+        "sistema": "RDWC",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "sistema",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.6",
+          "ok": false
+        }
+      ],
+      "failed": [
+        "cantidad",
+        "confianza>=0.6"
+      ],
+      "ok": false
+    },
+    {
+      "id": "035-typo-carge",
+      "input": "cargue 45 esquejes C11 coco hoy",
+      "status": 200,
+      "elapsed_ms": 16985,
+      "modelo_usado": "nvidia/meta/llama-3.3-70b-instruct",
+      "confianza": 0,
+      "follow_up": "¿Cuántos esquejes se cargaron en total?",
+      "extraccion": {
+        "tipo_operacion": "esquejado",
+        "cantidad": null,
+        "camada": "C11",
+        "sistema": "COCO",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "sistema",
+          "ok": true
+        },
+        {
+          "name": "fecha",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.75",
+          "ok": false
+        }
+      ],
+      "failed": [
+        "cantidad",
+        "confianza>=0.75"
+      ],
+      "ok": false
+    },
+    {
+      "id": "036-typo-cortamos",
+      "input": "cortamos 70 plantas C12 hoy",
+      "status": 200,
+      "elapsed_ms": 17404,
+      "modelo_usado": "nvidia/meta/llama-3.3-70b-instruct",
+      "confianza": 0,
+      "follow_up": "Genial, gracias por la info, ¿cuál es el sistema que se utilizó para la cosecha?",
+      "extraccion": {
+        "tipo_operacion": "cosecha",
+        "cantidad": null,
+        "camada": "C12",
+        "sistema": "null",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "fecha",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.6",
+          "ok": false
+        }
+      ],
+      "failed": [
+        "cantidad",
+        "confianza>=0.6"
+      ],
+      "ok": false
+    },
+    {
+      "id": "037-typo-manicuramos",
+      "input": "manicuramos 3kg camada 15",
+      "status": 200,
+      "elapsed_ms": 9338,
+      "modelo_usado": "nvidia/meta/llama-3.3-70b-instruct",
+      "confianza": 0,
+      "follow_up": "¿Cuál es el sistema que se utilizó para el trimming?",
+      "extraccion": {
+        "tipo_operacion": "trimming",
+        "cantidad": null,
+        "camada": "C15",
+        "sistema": "null",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.55",
+          "ok": false
+        }
+      ],
+      "failed": [
+        "cantidad",
+        "confianza>=0.55"
+      ],
+      "ok": false
+    },
+    {
+      "id": "038-c8-invalida",
+      "input": "cosechamos 50 plantas C8 hoy",
+      "status": 200,
+      "elapsed_ms": 8705,
+      "modelo_usado": "nvidia/meta/llama-3.3-70b-instruct",
+      "confianza": 0,
+      "follow_up": "Genial, gracias por la info, ¿en qué sistema se hicieron los cultivos de la camada C8?",
+      "extraccion": {
+        "tipo_operacion": "cosecha",
+        "cantidad": null,
+        "camada": "null",
+        "sistema": "null",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "camada",
+          "ok": false
+        },
+        {
+          "name": "confianza<=0.6",
+          "ok": true
+        },
+        {
+          "name": "follow_up",
+          "ok": true
+        }
+      ],
+      "failed": [
+        "cantidad",
+        "camada"
+      ],
+      "ok": false
+    },
+    {
+      "id": "039-c10-invalida",
+      "input": "esquejado 40 C10 coco",
+      "status": 200,
+      "elapsed_ms": 6774,
+      "modelo_usado": "nvidia/meta/llama-3.3-70b-instruct",
+      "confianza": 0,
+      "follow_up": "¿Cuántas plantas se esquejaron en total?",
+      "extraccion": {
+        "tipo_operacion": "esquejado",
+        "cantidad": null,
+        "camada": "C10",
+        "sistema": "COCO",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "camada",
+          "ok": false
+        },
+        {
+          "name": "sistema",
+          "ok": true
+        },
+        {
+          "name": "confianza<=0.6",
+          "ok": true
+        },
+        {
+          "name": "follow_up",
+          "ok": true
+        }
+      ],
+      "failed": [
+        "cantidad",
+        "camada"
+      ],
+      "ok": false
+    },
+    {
+      "id": "040-cantidad-negativa-invalida",
+      "input": "baja -5 plantas C7",
+      "status": 200,
+      "elapsed_ms": 8832,
+      "modelo_usado": "nvidia/meta/llama-3.3-70b-instruct",
+      "confianza": 0,
+      "follow_up": "Che, ¿de qué sistema son esas 5 plantas que se dieron de baja en la camada C7?",
+      "extraccion": {
+        "tipo_operacion": "baja_stock",
+        "cantidad": null,
+        "camada": "C7",
+        "sistema": "null",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": true
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "confianza<=0.6",
+          "ok": true
+        }
+      ],
+      "failed": [],
+      "ok": true
+    },
+    {
+      "id": "041-cantidad-muy-grande",
+      "input": "ingreso 999999 unidades",
+      "status": 200,
+      "elapsed_ms": 8266,
+      "modelo_usado": "nvidia/meta/llama-3.3-70b-instruct",
+      "confianza": 0.4,
+      "follow_up": "Che, ¿de qué camada son esas 999999 unidades?",
+      "extraccion": {
+        "tipo_operacion": "ingreso_insumos",
+        "cantidad": null,
+        "camada": null,
+        "sistema": null,
+        "fecha": "2026-04-19",
+        "id_lote": null,
+        "observaciones": null,
+        "confianza": 0.4
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": true
+        },
+        {
+          "name": "confianza<=0.5",
+          "ok": true
+        }
+      ],
+      "failed": [],
+      "ok": true
+    },
+    {
+      "id": "042-texto-muy-corto-3-chars",
+      "input": "123",
+      "status": 200,
+      "elapsed_ms": 11629,
+      "modelo_usado": "nvidia/meta/llama-3.3-70b-instruct",
+      "confianza": 0.1,
+      "follow_up": "¿De qué tipo de operación se trata y cuántas plantas son?",
+      "extraccion": {
+        "tipo_operacion": null,
+        "cantidad": null,
+        "camada": null,
+        "sistema": null,
+        "fecha": null,
+        "id_lote": null,
+        "observaciones": "123",
+        "confianza": 0.1
+      },
+      "checks": [
+        {
+          "name": "confianza<=0.2",
+          "ok": true
+        }
+      ],
+      "failed": [],
+      "ok": true
+    },
+    {
+      "id": "043-observaciones-largas",
+      "input": "cosechamos 80 plantas C15 rdwc hoy peso fresco 30kg en buenas condiciones sanitarias sin plagas detectadas responsable Juan Perez lote 25.SF2.FL1-8-C15",
+      "status": 200,
+      "elapsed_ms": 10305,
+      "modelo_usado": "nvidia/meta/llama-3.3-70b-instruct",
+      "confianza": 0,
+      "follow_up": "Che, ¿cuál es la cantidad en peso seco de la cosecha?",
+      "extraccion": {
+        "tipo_operacion": "cosecha",
+        "cantidad": null,
+        "camada": "C15",
+        "sistema": "RDWC",
+        "fecha": "2026-04-19",
+        "id_lote": "25.SF2.FL1-8-C15",
+        "observaciones": "peso fresco 30kg en buenas condiciones sanitarias sin plagas detectadas responsable Juan Perez",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "sistema",
+          "ok": true
+        },
+        {
+          "name": "fecha",
+          "ok": true
+        },
+        {
+          "name": "observaciones_contains",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.75",
+          "ok": false
+        }
+      ],
+      "failed": [
+        "cantidad",
+        "confianza>=0.75"
+      ],
+      "ok": false
+    },
+    {
+      "id": "044-fecha-sin-anio",
+      "input": "cosechamos 40 plantas C7 el 3 de abril",
+      "status": 200,
+      "elapsed_ms": 9343,
+      "modelo_usado": "nvidia/meta/llama-3.3-70b-instruct",
+      "confianza": 0,
+      "follow_up": "¿Cuál es el sistema que se utilizó para la cosecha?",
+      "extraccion": {
+        "tipo_operacion": "cosecha",
+        "cantidad": null,
+        "camada": "C7",
+        "sistema": "null",
+        "fecha": "2026-04-03",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "fecha",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.6",
+          "ok": false
+        }
+      ],
+      "failed": [
+        "cantidad",
+        "confianza>=0.6"
+      ],
+      "ok": false
+    },
+    {
+      "id": "045-ingles-mezcla",
+      "input": "harvested 50 plants C11 today",
+      "status": 200,
+      "elapsed_ms": 16730,
+      "modelo_usado": "nvidia/meta/llama-3.3-70b-instruct",
+      "confianza": 0,
+      "follow_up": "¿Podés confirmarme la cantidad de plantas cosechadas?",
+      "extraccion": {
+        "tipo_operacion": "cosecha",
+        "cantidad": null,
+        "camada": "C11",
+        "sistema": "null",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "fecha",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.6",
+          "ok": false
+        }
+      ],
+      "failed": [
+        "cantidad",
+        "confianza>=0.6"
+      ],
+      "ok": false
+    },
+    {
+      "id": "046-variedad-explicita",
+      "input": "cosecha pete hope 60 plantas C7 flora 1 ayer",
+      "status": 200,
+      "elapsed_ms": 9492,
+      "modelo_usado": "nvidia/meta/llama-3.3-70b-instruct",
+      "confianza": 0,
+      "follow_up": "Che, ¿cuántas plantas se cosecharon en total?",
+      "extraccion": {
+        "tipo_operacion": "cosecha",
+        "cantidad": null,
+        "camada": "C7",
+        "sistema": "COCO",
+        "fecha": "2026-04-18",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "sistema",
+          "ok": true
+        },
+        {
+          "name": "fecha",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.7",
+          "ok": false
+        }
+      ],
+      "failed": [
+        "cantidad",
+        "confianza>=0.7"
+      ],
+      "ok": false
+    },
+    {
+      "id": "047-varios-sistemas",
+      "input": "fertilizamos flora 1 y flora 2 200 litros pro grow",
+      "status": 200,
+      "elapsed_ms": 12082,
+      "modelo_usado": "nvidia/meta/llama-3.3-70b-instruct",
+      "confianza": 0,
+      "follow_up": "¿Me confirmás la cantidad de litros que usaste en cada camada?",
+      "extraccion": {
+        "tipo_operacion": "fertilizacion",
+        "cantidad": null,
+        "camada": "null",
+        "sistema": "null",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "pro grow",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "confianza<=0.6",
+          "ok": true
+        }
+      ],
+      "failed": [
+        "cantidad"
+      ],
+      "ok": false
+    },
+    {
+      "id": "048-punctuacion-cero",
+      "input": "esquejado,C7,coco,hoy,45",
+      "status": 200,
+      "elapsed_ms": 11003,
+      "modelo_usado": "nvidia/meta/llama-3.3-70b-instruct",
+      "confianza": 0,
+      "follow_up": "Che, ¿cuántas plantas se esquejaron en total?",
+      "extraccion": {
+        "tipo_operacion": "esquejado",
+        "cantidad": null,
+        "camada": "C7",
+        "sistema": "COCO",
+        "fecha": "2026-04-19",
+        "id_lote": "null",
+        "observaciones": "null",
+        "confianza": 0
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": false
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "sistema",
+          "ok": true
+        },
+        {
+          "name": "fecha",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.5",
+          "ok": false
+        }
+      ],
+      "failed": [
+        "cantidad",
+        "confianza>=0.5"
+      ],
+      "ok": false
+    },
+    {
+      "id": "049-caps",
+      "input": "COSECHAMOS 75 PLANTAS C11 RDWC HOY",
+      "status": 200,
+      "elapsed_ms": 7654,
+      "modelo_usado": "github/gpt-4o-mini",
+      "confianza": 0.9,
+      "extraccion": {
+        "tipo_operacion": "cosecha",
+        "cantidad": 75,
+        "camada": "C11",
+        "sistema": "RDWC",
+        "fecha": "2026-04-19",
+        "id_lote": null,
+        "observaciones": null,
+        "confianza": 0.9
+      },
+      "checks": [
+        {
+          "name": "tipo_operacion",
+          "ok": true
+        },
+        {
+          "name": "cantidad",
+          "ok": true
+        },
+        {
+          "name": "camada",
+          "ok": true
+        },
+        {
+          "name": "sistema",
+          "ok": true
+        },
+        {
+          "name": "fecha",
+          "ok": true
+        },
+        {
+          "name": "confianza>=0.75",
+          "ok": true
+        }
+      ],
+      "failed": [],
+      "ok": true
+    },
+    {
+      "id": "050-tipo-ambiguo-multiple",
+      "input": "trimming y secado juntos de C15 hoy",
+      "status": 200,
+      "elapsed_ms": 13335,
+      "modelo_usado": "github/gpt-4o-mini",
+      "confianza": 0.5,
+      "follow_up": "¿Y cuántas plantas fueron en total?",
+      "extraccion": {
+        "tipo_operacion": "trimming",
+        "cantidad": null,
+        "camada": "C15",
+        "sistema": null,
+        "fecha": "2026-04-19",
+        "id_lote": null,
+        "observaciones": null,
+        "confianza": 0.5
+      },
+      "checks": [
+        {
+          "name": "confianza<=0.6",
+          "ok": true
+        },
+        {
+          "name": "follow_up",
+          "ok": true
+        }
+      ],
+      "failed": [],
+      "ok": true
+    }
+  ]
+}

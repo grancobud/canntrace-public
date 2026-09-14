@@ -1,0 +1,800 @@
+# Mapeo xlsx CM-RE-XXXX -> tabla operativa Postgres.
+# Cada entrada documenta:
+#   table          : tabla destino registros_*
+#   tipo           : valor para columna 'tipo' (discriminator dentro de la tabla)
+#   header_keywords: terminos a buscar en una fila para identificarla como header
+#                    (>=2 matches case/accent-insensitive => esa es la fila header)
+#   columns        : { etiqueta_xlsx_normalizada: nombre_columna_bd_o_'datos_extra.subkey' }
+#                    Las claves se normalizan (lowercase + strip + sin acentos + sin espacios extra)
+#                    Si el valor empieza con 'datos_extra.' va al jsonb.
+#   defaults       : valores fijos a setear (ej. fecha si la xlsx no la trae)
+#
+# Hojas no listadas aca van solo a xlsx_raw_rows (captura cruda). Nada se pierde.
+
+CM-RE-0601:
+  table: registros_cosecha
+  tipo: certificado_cosecha
+  header_keywords: ['fecha emision', 'plantas cosechadas', 'fecha cosecha']
+  columns:
+    fecha emision: fecha
+    fila: fila
+    fecha transplante: fecha_transplante
+    fecha cosecha: fecha_cosecha
+    plantas cosechadas: plantas_cosechadas
+    estado producto: estado_producto
+    ubicacion cultivo: ubicacion_cultivo
+    sala cultivo: sala
+    camada: camada
+    genetica: genetica
+    cumple bpa: cumple_bpa
+    cond sanitaria: cond_sanitaria
+    observaciones sanitarias: obs_sanitarias
+    instrumental: instrumental
+
+CM-RE-0605:
+  table: registros_cosecha
+  tipo: recepcion_secado
+  header_keywords: ['fecha recepcion', 'cantidad recibida', 'cuadro de secado']
+  columns:
+    fecha recepcion: fecha_recepcion
+    nombre lote: codigo_lote
+    fecha cosecha: fecha_cosecha
+    cantidad recibida: cantidad_recibida
+    estado producto: estado_producto
+    area entrega: datos_extra.area_entrega
+    responsable entrega: responsable_entrega
+    fecha traslado: fecha_traslado
+    condicion recepcion: cond_recepcion
+    cuadro de secado: cuadro_secado
+    observaciones: observaciones
+    responsable recepcion sec: responsable_recepcion
+    codigo trazabilidad cosec: cod_traza_cosecha
+    codigo trazabilidad secad: cod_traza_secado
+
+CM-RE-0701:
+  table: registros_mantenimiento
+  tipo: calibracion_balanza
+  header_keywords: ['fecha registro', 'proxima revision', 'marca']
+  columns:
+    fecha registro: fecha_mantenimiento
+    proxima revision: proxima_fecha
+    direccion: equipo_ubicacion
+    marca: equipo_nombre
+    modelo: datos_extra.modelo
+    n de serie: equipo_codigo
+    valor de comprobacion: datos_extra.valor_comprobacion
+    # 'resultado de comprobacion' es texto largo (>50 chars), no entra en varchar(50). Va a datos_extra.
+    resultado de comprobacion: datos_extra.resultado_comprobacion
+    recomendaciones aplicadas: observaciones
+    responsable revision: responsable
+    documento relacionado: datos_extra.documento_relacionado
+
+CM-RE-0801:
+  table: registros_personal
+  tipo: capacitacion
+  header_keywords: ['fecha', 'expositor', 'tema', 'participantes']
+  columns:
+    fecha: fecha
+    expositor: responsable
+    tema: tema_capacitacion
+    participantes: descripcion
+    comprobantes: datos_extra.comprobantes
+  defaults:
+    descripcion: 'capacitacion sin descripcion (importado xlsx)'
+
+CM-RE-0803:
+  table: registros_personal
+  tipo: emergencia_accidente
+  header_keywords: ['fecha', 'lugar del evento', 'acciones tomadas']
+  columns:
+    fecha: fecha
+    lugar del evento: datos_extra.lugar
+    emergencia: datos_extra.emergencia_si_no
+    incidente: datos_extra.incidente_si_no
+    accidente: datos_extra.accidente_si_no
+    causa: datos_extra.causa
+    acciones tomadas: descripcion
+  defaults:
+    descripcion: 'emergencia/accidente sin descripcion (importado xlsx)'
+
+CM-RE-0902:
+  table: registros_calidad
+  tipo: toma_muestras
+  header_row: 8
+  columns:
+    fecha: fecha
+    codigo de lote: datos_extra.codigo_lote
+    cantidad de muestra: cantidad_muestra
+    peso de la muestra gr: datos_extra.peso_gr
+    destino muestra: destino_muestra
+    laboratirio destino: datos_extra.laboratorio_destino
+    observacion: observaciones
+    firma: datos_extra.firma
+    doc relacionado: datos_extra.doc_relacionado
+
+CM-RE-0903:
+  table: registros_calidad
+  tipo: contramuestras_producto
+  header_keywords: ['numero de contramuestra', 'fecha de toma', 'lote']
+  columns:
+    numero de contramuestra: numero_certificado
+    fecha de toma: fecha
+    lote: datos_extra.lote_codigo
+    responsable de toma: responsable
+    destino: destino_muestra
+    condiciones de conservaci: datos_extra.condiciones_conservacion
+    observaciones: observaciones
+
+CM-RE-0905:
+  table: resultados_laboratorio
+  # resultados_laboratorio no tiene columna 'tipo' (no es un registro CUMCS, es resultado puntual)
+  no_tipo: true
+  header_keywords: ['protocolo', 'tipo de muestra', 'estudio solicitado']
+  defaults:
+    resultado_general: pendiente
+    laboratorio_nombre: 'Sin especificar (importado xlsx)'
+    fecha_analisis: '2025-01-01'
+  columns:
+    protocolo n: numero_certificado
+    tipo de muestra: datos_extra.tipo_muestra
+    solicitante: datos_extra.solicitante
+    estudio solicitado: datos_extra.estudio_solicitado
+    laboratorio: laboratorio_nombre
+    responsable muestra: datos_extra.responsable_muestra
+    fecha muestreo: fecha_recepcion
+    lote: datos_extra.lote_codigo
+    fecha envio muestra: fecha_analisis
+    documento relacionado: archivo_certificado_url
+
+CM-RE-1004:
+  table: registros_documentales
+  tipo: recomendacion
+  header_keywords: ['fecha recomendacion', 'titulo registro', 'codigo documento']
+  columns:
+    fecha recomendacion: fecha
+    titulo registro: titulo
+    codigo documento: numero_documento
+    revision vigente: version
+    numero pagina: datos_extra.numero_pagina
+    observaciones: observaciones
+    doc relacionado: datos_extra.doc_relacionado
+
+CM-RE-1005:
+  table: registros_documentales
+  tipo: auditoria_interna
+  header_keywords: ['fecha', 'a cargo de', 'norma auditada']
+  columns:
+    fecha: fecha
+    a cargo de: datos_extra.a_cargo_de
+    responsable por calidad: datos_extra.responsable_calidad
+    responsable por produccio: datos_extra.responsable_produccion
+    responsable por postcosec: datos_extra.responsable_postcosecha
+    norma auditada: titulo
+    observaciones: observaciones
+
+CM-RE-1006:
+  table: registros_documentales
+  tipo: comentario
+  header_keywords: ['fecha', 'comentario']
+  columns:
+    fecha: fecha
+    comentario: descripcion
+    responsable: responsable
+    observaciones: observaciones
+
+# --- Hojas con volumen alto agregadas en segunda iteracion ---
+
+CM-RE-0103:
+  table: registros_condiciones_ambientales
+  tipo: clonacion
+  header_keywords: ['identificacion', 'sustrato', 'aeroclonador']
+  columns:
+    identificacion: identificacion
+    sustrato: sustrato
+    fecha: fecha
+    aeroclonador n: aeroclonador_n
+    ambiente: datos_extra.ambiente
+    t a a: temp_aa
+    t h20: temp_h2o
+    ec: ec
+    ph: ph_inicial
+
+CM-RE-0104:
+  table: registros_condiciones_ambientales
+  tipo: vegetativa
+  header_keywords: ['fecha', 'sistema', 'ventilacion']
+  columns:
+    fecha: fecha
+    sistema: sistema
+    ambiente: datos_extra.ambiente
+    t h20: temp_h2o
+    ec: ec
+    ph: ph_inicial
+    orp: orp
+    ventilacion: ventilacion
+
+CM-RE-0105:
+  table: registros_condiciones_ambientales
+  tipo: floracion
+  header_keywords: ['fecha', 'vpd', 'co2']
+  columns:
+    fecha: fecha
+    sistema: sistema
+    est de cultivo: estado_cultivo
+    t h20: temp_h2o
+    ec: ec
+    ph: ph_inicial
+    vpd kpa: vpd_kpa
+    co2 ppm: co2_ppm
+    ventilacion: ventilacion
+
+CM-RE-0203:
+  table: registros_trazabilidad
+  tipo: codigo_floracion
+  header_keywords: ['cod traza', 'camada', 'sistema de produccion']
+  columns:
+    cod traza: cod_traza_cosecha
+    camada: camada
+    sistema de produccion: sistema
+    sala de floracion: sala
+    fila: fila
+    formato origen: datos_extra.formato_origen
+
+CM-RE-0204:
+  table: registros_trazabilidad
+  tipo: codigo_secado
+  header_keywords: ['cod traza', 'camada', 'sistema de produccion']
+  columns:
+    cod traza: cod_traza_secado
+    camada: camada
+    sistema de produccion: sistema
+    sala de floracion: sala
+    fila: fila
+    n fila: datos_extra.n_fila
+    formato origen: datos_extra.formato_origen
+
+CM-RE-0501:
+  table: registros_fitosanitarios
+  tipo: control_plagas
+  header_keywords: ['cebo', 'fecha de control', 'autorizado']
+  columns:
+    cebo n: datos_extra.cebo_n
+    fecha de control: fecha
+    ubicacion: datos_extra.ubicacion
+    control: datos_extra.control
+    reposicion: datos_extra.reposicion
+    autorizado por: responsable
+    principio activo utili: producto_aplicado
+
+CM-RE-0502:
+  table: registros_fitosanitarios
+  # Hoja matricial 216 cols con plagas y enfermedades por sala/cultivo.
+  # Mapeo minimalista: fecha + niveles a datos_extra.matriz (la fila completa queda en raw).
+  tipo: monitoreo_plagas
+  header_row: 15
+  columns:
+    fecha: fecha
+    nivel de infestacion: datos_extra.nivel_infestacion
+  defaults:
+    plaga_detectada: 'monitoreo periodico (matriz xlsx)'
+
+CM-RE-0802:
+  table: registros_personal
+  tipo: entrega_epi
+  defaults:
+    descripcion: 'entrega EPI (importado xlsx)'
+
+# === Fase 4: 22 mapeos adicionales (volumen ~6000 filas extra) ===
+
+# G01 Condiciones ambientales — variantes por etapa
+CM-RE-0101:
+  table: registros_condiciones_ambientales
+  tipo: planta_madre_hidro
+  # Header en fila 7 + sub-headers en fila 8. Mapeamos r7 y el resto va en raw.
+  # sistema y ventilacion van a datos_extra: algunas filas del xlsx exceden varchar(20)/(40).
+  header_row: 7
+  columns:
+    fecha: fecha
+    sistema: datos_extra.sistema_raw
+    ambiente: datos_extra.ambiente_humedad
+    t h20: temp_h2o
+    ec: ec
+    ph: ph_inicial
+    vpd kpa: vpd_kpa
+    co2 ppm: co2_ppm
+    ventilacion: datos_extra.ventilacion_raw
+    observaciones: observaciones
+
+CM-RE-0102:
+  table: registros_condiciones_ambientales
+  tipo: planta_madre_coco
+  header_keywords: ['identificacion', 'variedad', 'fecha', 'ambiente']
+  columns:
+    identificacion de plan: identificacion
+    variedad: variedad
+    fecha: fecha
+    sistema: sistema
+    ambiente: datos_extra.ambiente
+    t h20: temp_h2o
+    ec: ec
+    ph: ph_inicial
+    vpd kpa: vpd_kpa
+    co2 ppm: co2_ppm
+    ventilacion: ventilacion
+    observaciones: observaciones
+
+CM-RE-0106:
+  table: registros_condiciones_ambientales
+  tipo: area_secado
+  header_row: 5
+  columns:
+    fecha: fecha
+    # todos a datos_extra: presencia_insectos/hongos son varchar(10) y valores del xlsx son descriptivos
+    sistema: datos_extra.sistema_raw
+    id lote: datos_extra.id_lote_raw
+    ambiente: datos_extra.ambiente
+    presencia de insectos: datos_extra.presencia_insectos
+    presencia de hongos: datos_extra.presencia_hongos
+
+CM-RE-0107:
+  table: registros_condiciones_ambientales
+  tipo: almacenamiento
+  header_keywords: ['fecha', 'id lote', 'ambiente']
+  columns:
+    fecha: fecha
+    id lote: id_lote_texto
+    ambiente: datos_extra.ambiente
+    observaciones: observaciones
+
+CM-RE-0108:
+  table: registros_condiciones_ambientales
+  tipo: cuarentena
+  header_keywords: ['fecha', 'id lote', 'ambiente']
+  columns:
+    fecha: fecha
+    id lote: id_lote_texto
+    ambiente: datos_extra.ambiente
+    observaciones: observaciones
+
+# G02 Trazabilidad — codigos adicionales
+CM-RE-0202:
+  table: registros_trazabilidad
+  tipo: codigo_clonacion
+  header_keywords: ['cod traza', 'camada', 'planta madre', 'bandeja']
+  columns:
+    cod traza: cod_traza_cosecha
+    camada: camada
+    planta madre: madre_origen
+    bandeja de produccion n: bandeja
+
+# G02 mapeos restantes (0201, 0205, 0206) — 0210 es diccionario descriptivo, queda solo en raw
+CM-RE-0201:
+  table: registros_trazabilidad
+  tipo: codigo_planta_madre
+  header_keywords: ['codigo id', 'fecha de ingreso', 'fecha de baja', 'sistema']
+  columns:
+    codigo id: cod_generico
+    fecha de ingreso: fecha
+    fecha de baja: datos_extra.fecha_baja
+    sistema: sistema
+    n clonacion que da origen pm: clonacion_origen
+    id madre que da origen: madre_origen
+
+CM-RE-0205:
+  table: registros_trazabilidad
+  tipo: codigo_trimeo
+  header_keywords: ['cod traza', 'camada', 'numero de cuadro', 'fecha inicio secado']
+  columns:
+    cod traza: cod_traza_trimeo
+    camada: camada
+    sistema de produccion: sistema
+    # numero de cuadro tiene valores tipo "12-13" (string con guion), no integer
+    numero de cuadro: datos_extra.numero_cuadro
+    fecha inicio secado: fecha
+    fecha finalizacion secado: datos_extra.fecha_fin_secado
+
+CM-RE-0206:
+  table: registros_trazabilidad
+  # 'codigo_almacenamiento' (21) excedia varchar(20) del tipo check. Acortado.
+  tipo: codigo_almacen
+  header_keywords: ['cod traza', 'camada', 'sistema', 'fecha de ingreso']
+  columns:
+    cod traza: cod_traza_almacenamiento
+    # camada + sistema a datos_extra: algunas filas exceden varchar(10) y varchar(20)
+    camada: datos_extra.camada_xlsx
+    sistema de produccion: datos_extra.sistema_produccion
+    fecha de ingreso a trimeo: fecha
+
+CM-RE-0210:
+  table: registros_documentales
+  # enum docs.tipo no tiene 'diccionario_codigos', usamos 'documento_externo' (referencia descriptiva).
+  # codigo_cumcs='CM-RE-0210' en datos_extra mantiene identidad.
+  tipo: documento_externo
+  header_row: 6
+  columns:
+    etapa: titulo
+    tipo de codigo: datos_extra.tipo_codigo
+    que representa: descripcion
+    codigo maestro: datos_extra.codigo_maestro
+    ejemplo: datos_extra.ejemplo
+
+# G03 resto — 0303, 0305, 0306 (0302 tiene solo 3 filas sin estructura tabular, queda en raw)
+
+CM-RE-0303:
+  table: registros_fertilizantes
+  # Hoja matricial con 2 bloques (Plantas Madres + Floracion). Mapeamos solo el primer bloque
+  # las cols 7-12 del segundo bloque quedan en raw.
+  tipo: gasto_solucion
+  header_row: 11
+  columns:
+    fecha: fecha
+    litros de solucion: datos_extra.litros_solucion
+    tipo de solucion: datos_extra.tipo_solucion
+    observacion: observaciones
+    responsable: responsable
+    indicado por: datos_extra.indicado_por
+
+CM-RE-0305:
+  table: registros_fertilizantes
+  # Matriz ancha (72 cols) con multiples bloques de inventario. Mapeamos primer bloque;
+  # el resto queda en raw.
+  tipo: stock_insumos
+  header_row: 7
+  columns:
+    fecha de control: fecha
+    fecha de entrada salida: datos_extra.fecha_movimiento
+    producto: datos_extra.producto
+    entrada kg o lt: datos_extra.entrada_cantidad
+    salida kg o lt: datos_extra.salida_cantidad
+    saldo en existencia kg o lt: datos_extra.saldo_existencia
+    verificada: datos_extra.verificada
+
+CM-RE-0306:
+  table: registros_documentales
+  # 'pedido_insumos' esta en el enum docs.tipo
+  tipo: pedido_insumos
+  header_row: 7
+  columns:
+    fecha: fecha
+    sector: datos_extra.sector
+    evento: titulo
+    insumos: datos_extra.insumos
+    cantidad: datos_extra.cantidad
+    detalle fundamento de compra: descripcion
+    verificado: datos_extra.verificado
+    informado: datos_extra.informado
+    nivel de prioridad: datos_extra.prioridad
+    # valores del xlsx ('Informado', 'Comprado') no estan en el enum docs.estado; va a datos_extra
+    estado: datos_extra.estado_pedido
+    fecha de compra: datos_extra.fecha_compra
+
+CM-RE-0207:
+  table: registros_trazabilidad
+  tipo: codigo_paqueteria
+  header_keywords: ['cod traza', 'camada', 'sistema', 'fecha de ingreso']
+  columns:
+    cod traza: cod_traza_almacenamiento
+    camada: camada
+    sistema de produccion: sistema
+    fecha de ingreso a alm: fecha
+
+CM-RE-0208:
+  table: registros_trazabilidad
+  tipo: codigo_comercial
+  header_keywords: ['id bolsa', 'id camada', 'n de bolsa']
+  columns:
+    id bolsa con codigo inter: cod_comercial
+    id camada: camada
+    n de fila en prod: fila
+    n csd: datos_extra.n_csd
+    n de bolsa: datos_extra.n_bolsa
+    gr bolsa: peso_total_kg
+
+CM-RE-0209:
+  table: registros_trazabilidad
+  tipo: trazabilidad_maestra
+  header_keywords: ['identificacion', 'id bolsa', 'id camada']
+  columns:
+    identificacion codigo com: cod_generico
+    id bolsa con codigo inter: cod_comercial
+    id camada: camada
+
+CM-RE-0211:
+  table: registros_trazabilidad
+  tipo: general
+  header_keywords: ['fecha de inicio', 'maternidad', 'esquema clonac']
+  columns:
+    fecha de inicio: fecha
+    fecha de baja: datos_extra.fecha_baja
+    n de madre que da ori: madre_origen
+    maternidad: datos_extra.maternidad
+    camada: camada
+    esquema clonac relac: clonacion_origen
+    destino: destino
+    cantidad esquejes: cantidad
+    produccion: datos_extra.produccion
+    plantas madres: datos_extra.plantas_madres
+    disp final: datos_extra.disp_final
+
+# G03 Fertilizantes — aplicacion + inventario
+CM-RE-0301:
+  table: registros_fertilizantes
+  tipo: aplicacion
+  header_keywords: ['fecha', 'tanque', 'fertilizantes', 'litros']
+  columns:
+    fecha: fecha
+    tanque: datos_extra.tanque
+    fertilizantes cantida: datos_extra.fertilizantes
+    litros de sol nut: datos_extra.litros_solucion
+    destino solucion: datos_extra.destino_solucion
+    observaciones: observaciones
+
+CM-RE-0304:
+  table: registros_fertilizantes
+  tipo: inventario
+  header_keywords: ['fecha entrada', 'producto', 'saldo']
+  columns:
+    fecha entrada: fecha
+    producto: datos_extra.producto
+    entrada kgs lts: datos_extra.entrada
+    salida kgs lts: datos_extra.salida
+    saldo existencia kgs l: datos_extra.saldo
+    observaciones: observaciones
+
+# G04 Agua
+CM-RE-0401:
+  table: registros_agua
+  tipo: sanitizacion_agua
+  header_keywords: ['fecha', 'agua tratada', 'producto utilizado']
+  columns:
+    fecha: fecha
+    agua tratada lts: volumen_litros
+    producto utilizado: datos_extra.producto
+    cant producto usado: datos_extra.cantidad_producto
+    observacion: observaciones
+    responsable: responsable
+
+CM-RE-0402:
+  table: registros_agua
+  tipo: analisis_agua
+  header_row: 7
+  columns:
+    n registro: datos_extra.n_registro
+    punto de muestreo: datos_extra.punto_muestreo
+    hora de muestreo: datos_extra.hora_muestreo
+    fecha extraccion muestra: fecha
+    fecha recepcion muestra l: datos_extra.fecha_recepcion_lab
+    fecha inicio ensayo lab: datos_extra.fecha_inicio_ensayo
+    laboratorio emisor: datos_extra.laboratorio
+    numero protocolo informe: datos_extra.n_protocolo
+    fecha informe laboratorio: datos_extra.fecha_informe
+    tipo analisis principal: datos_extra.tipo_analisis
+    objeto analisis: datos_extra.objeto_analisis
+    metodologia empleada gene: datos_extra.metodologia
+    resultados de analisis: datos_extra.resultados_analisis
+    firma del responsable: responsable
+    documento relacionado: datos_extra.documento_relacionado
+
+# G05 Fitosanitarios
+CM-RE-0505:
+  table: registros_fitosanitarios
+  tipo: reingreso_parcela
+  header_row: 5
+  columns:
+    id lote: datos_extra.id_lote
+    producto aplicado: producto_aplicado
+    fecha aplicacion: fecha
+    fecha habilitacion: fecha_reingreso
+    responzable de autoriz: responsable
+
+CM-RE-0506:
+  table: registros_fitosanitarios
+  tipo: lmr_postcosecha
+  header_row: 5
+  columns:
+    fecha muestra: fecha
+    id lote: datos_extra.id_lote
+    laboratorio: datos_extra.laboratorio
+    principio activo: producto_aplicado
+    resultado: resultado_lmr
+    cumple si no: datos_extra.cumple
+    responsable: responsable
+
+CM-RE-0504:
+  table: registros_fitosanitarios
+  tipo: aplicacion_fitosanitario
+  header_row: 4
+  columns:
+    fecha de aplicacion: fecha
+    variedad: datos_extra.variedad
+    ubicacion lote: datos_extra.ubicacion_lote
+    objetivo: datos_extra.objetivo
+    nombre comercial producto: producto_aplicado
+    ingrediente activo produc: datos_extra.ingrediente_activo
+    dosis ml 100 l: dosis
+    condiciones ambientales: datos_extra.condiciones
+    equipo utilizado para la: datos_extra.equipo
+    carencia dias: periodo_carencia_dias
+    nombre del operario: responsable
+    asesor que recomendo la a: datos_extra.asesor
+
+# G06 Cosecha detalle
+CM-RE-0603:
+  table: registros_cosecha
+  tipo: datos_cosecha_ph
+  header_row: 9
+  columns:
+    fecha: fecha
+    cama: datos_extra.cama
+    id planta: codigo_lote
+    kg humedo planta: peso_fresco
+    observaciones: observaciones
+
+CM-RE-0604:
+  table: registros_cosecha
+  tipo: resumen_cosecha
+  header_keywords: ['fecha', 'cama', 'id lote', 'cant plantas']
+  columns:
+    fecha: fecha
+    cama: datos_extra.cama
+    id lote linea: codigo_lote
+    promedio de peso plant: peso_individual
+    cant plantas cama: plantas_cosechadas
+    total de prod por cam: peso_total
+    observaciones: observaciones
+
+# G07 Mantenimiento — equipos adicionales
+CM-RE-0703:
+  table: registros_mantenimiento
+  tipo: mantenimiento_generador
+  header_row: 4
+  columns:
+    fecha: fecha_mantenimiento
+    generador n: equipo_codigo
+    estado de la bateria v: datos_extra.estado_bateria
+    estado de carga de bat: datos_extra.estado_carga
+    control de nivel de ac: datos_extra.nivel_aceite
+    control de liquido ref: datos_extra.liquido_ref
+    control de nivel de co: datos_extra.nivel_combustible
+    control de hs de traba: datos_extra.horas_trabajo
+    verificacion visual ge: datos_extra.verif_visual
+    observaciones: observaciones
+  defaults:
+    equipo_nombre: 'Grupo Electrogeno (importado xlsx)'
+
+CM-RE-0704:
+  table: registros_mantenimiento
+  tipo: mantenimiento_ac
+  header_keywords: ['fecha', 'sala', 'actividad realizada', 'equipo']
+  columns:
+    fecha: fecha_mantenimiento
+    sala: datos_extra.sala
+    actividad realizada: datos_extra.actividad
+    responsable: responsable
+    observaciones: observaciones
+    equipo: equipo_nombre
+    estado: datos_extra.estado
+  defaults:
+    equipo_nombre: 'Aire acondicionado (importado xlsx)'
+
+CM-RE-0705:
+  table: registros_mantenimiento
+  tipo: mantenimiento_ventiladores
+  header_keywords: ['fecha', 'sala', 'actividad realizada', 'equipo']
+  columns:
+    fecha: fecha_mantenimiento
+    sala: datos_extra.sala
+    actividad realizada: datos_extra.actividad
+    responsable: responsable
+    observaciones: observaciones
+    equipo: equipo_nombre
+    estado: datos_extra.estado
+  defaults:
+    equipo_nombre: 'Ventilador (importado xlsx)'
+
+CM-RE-0706:
+  table: registros_mantenimiento
+  tipo: mantenimiento_deshumificadores
+  header_keywords: ['fecha', 'sala', 'actividad realizada', 'equipo']
+  columns:
+    fecha: fecha_mantenimiento
+    sala: datos_extra.sala
+    actividad realizada: datos_extra.actividad
+    responsable: responsable
+    observaciones: observaciones
+    equipo: equipo_nombre
+  defaults:
+    equipo_nombre: 'Deshumidificador (importado xlsx)'
+
+CM-RE-0707:
+  table: registros_mantenimiento
+  tipo: mantenimiento_osmosis
+  header_keywords: ['fecha', 'ec medida', 'responsable']
+  columns:
+    fecha: fecha_mantenimiento
+    ec medida en tanque po: datos_extra.ec_medida
+    responsable: responsable
+    observaciones: observaciones
+  defaults:
+    equipo_nombre: 'Equipo Osmosis Inversa'
+
+# G08 Limpieza adicional
+CM-RE-0809:
+  table: registros_personal
+  tipo: limpieza_recipientes
+  header_keywords: ['fecha', 'recipientes', 'limpieza del recipien']
+  columns:
+    fecha: fecha
+    recipientes nuevos us: datos_extra.recipientes
+    condicion del recipien: datos_extra.condicion
+    acciones correctivas: datos_extra.acciones
+    limpieza del recipient: datos_extra.limpieza
+    responsable: responsable
+  defaults:
+    descripcion: 'limpieza recipientes cosecha (importado xlsx)'
+
+CM-RE-0810:
+  table: registros_personal
+  tipo: limpieza_calzados
+  header_keywords: ['fecha', 'realizado por', 'observaciones']
+  columns:
+    fecha: fecha
+    realizado por: empleado_nombre
+    observaciones: observaciones
+  defaults:
+    descripcion: 'limpieza calzados (importado xlsx)'
+
+# G09 Calidad — residuos
+CM-RE-0910:
+  table: registros_calidad
+  tipo: disposicion_cannabis
+  header_keywords: ['fecha disposicion', 'identidicacion lote', 'destino']
+  columns:
+    fecha disposicion: fecha
+    identidicacion lote: datos_extra.id_lote
+    sala: datos_extra.sala
+    encargado disposicion: datos_extra.encargado
+    destino: metodo_disposicion
+    observaciones: observaciones
+    responsable: responsable
+
+CM-RE-0911:
+  table: registros_calidad
+  tipo: disposicion_residuos
+  header_keywords: ['fecha disposicion', 'encargado disposicion', 'destino']
+  columns:
+    fecha disposicion: fecha
+    encargado disposicion: datos_extra.encargado
+    destino: metodo_disposicion
+    unidad de medida bolsa: cantidad_residuo
+    responsable: responsable
+    verificacion: datos_extra.verificacion
+    observaciones: observaciones
+
+CM-RE-1002:
+  table: registros_documentales
+  tipo: documento_externo
+  header_row: 1
+  columns:
+    nombre del de: titulo
+    referido a: descripcion
+    procedimiento: numero_documento
+  defaults:
+    fecha: '2025-01-01'
+    titulo: 'Sin especificar (importado xlsx)'
+
+CM-RE-1003:
+  table: registros_documentales
+  tipo: analisis_riesgos
+  header_row: 6
+  columns:
+    n: datos_extra.n
+    lista de peligros preocupacio: titulo
+    tipo de riesgo: datos_extra.tipo_riesgo
+    sujeto del riesgo: datos_extra.sujeto_riesgo
+    probabilidad: datos_extra.probabilidad
+    gravedad: datos_extra.gravedad
+    impacto del riesgo: datos_extra.impacto
+  defaults:
+    fecha: '2025-01-01'
+    titulo: 'Sin especificar (importado xlsx)'

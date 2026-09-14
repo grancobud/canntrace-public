@@ -1,0 +1,94 @@
+name: Backup Supabase → GitHub Artifacts
+
+# Dump semanal de la BD Supabase. Se guarda como artifact del workflow run
+# (retencion 90 dias, gratis, sin tarjeta). Encriptado con AES-256 via gpg
+# symmetric usando BACKUP_PASSPHRASE.
+#
+# Descargar manual: Actions → ultimo run → Artifacts → canntrace-backup-YYYY-MM-DD
+# Desencriptar: gpg --decrypt canntrace-YYYY-MM-DD.sql.gz.gpg > canntrace.sql.gz
+#
+# Secrets requeridos en repo (Settings → Secrets and variables → Actions):
+#   SUPABASE_DB_URL       — postgres://postgres.<project>:<pwd>@aws-0-*.pooler.supabase.com:6543/postgres
+#                           (sacar de Supabase Dashboard → Settings → Database → Connection string)
+#   BACKUP_PASSPHRASE     — frase larga para encriptar los dumps (guardala donde no la pierdas)
+
+on:
+  schedule:
+    # Domingo 03:00 UTC (00:00 ARG)
+    - cron: '0 3 * * 0'
+  workflow_dispatch:  # Trigger manual desde Actions tab
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install PostgreSQL client 17 (Supabase corre PG 17)
+        run: |
+          sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+          wget -qO- https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client-17 gnupg
+          # Ubuntu preinstala pg_dump 16. Forzar que el 17 tome precedencia en PATH:
+          echo "/usr/lib/postgresql/17/bin" >> "$GITHUB_PATH"
+          /usr/lib/postgresql/17/bin/pg_dump --version
+
+      - name: Dump + comprimir + encriptar
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          BACKUP_PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
+        run: |
+          set -euo pipefail
+          if [ -z "${SUPABASE_DB_URL}" ]; then
+            echo "::error::SUPABASE_DB_URL no seteado en secrets del repo"
+            exit 1
+          fi
+          if [ -z "${BACKUP_PASSPHRASE}" ]; then
+            echo "::error::BACKUP_PASSPHRASE no seteado en secrets del repo"
+            exit 1
+          fi
+
+          FECHA=$(date -u +%Y-%m-%d)
+          ARCHIVO="canntrace-${FECHA}.sql.gz.gpg"
+
+          echo "→ Dumpeando BD Supabase..."
+          pg_dump \
+            --no-owner \
+            --no-privileges \
+            --clean \
+            --if-exists \
+            --quote-all-identifiers \
+            "${SUPABASE_DB_URL}" \
+          | gzip -9 \
+          | gpg --batch --yes --symmetric --cipher-algo AES256 \
+                --passphrase "${BACKUP_PASSPHRASE}" \
+                --output "${ARCHIVO}"
+
+          SIZE=$(du -h "${ARCHIVO}" | cut -f1)
+          echo "✓ Backup generado: ${ARCHIVO} (${SIZE})"
+          echo "ARCHIVO=${ARCHIVO}" >> "$GITHUB_ENV"
+          echo "FECHA=${FECHA}" >> "$GITHUB_ENV"
+
+      - name: Subir como artifact (90 dias retencion)
+        uses: actions/upload-artifact@v4
+        with:
+          name: canntrace-backup-${{ env.FECHA }}
+          path: ${{ env.ARCHIVO }}
+          retention-days: 90
+          compression-level: 0  # ya esta comprimido + encriptado
+
+      - name: Resumen
+        run: |
+          echo "## Backup semanal CannTrace" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Archivo: \`${ARCHIVO}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Fecha: ${FECHA}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Retencion: 90 dias" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Descarga: Actions → este run → Artifacts" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Desencriptar: \`gpg --decrypt ${ARCHIVO} > canntrace.sql.gz\`" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Notificar si fallo
+        if: failure()
+        run: echo "::error::Backup Supabase fallo — revisar logs"

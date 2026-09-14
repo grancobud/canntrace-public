@@ -1,0 +1,21 @@
+# Supabase CLI config para CannTrace
+# Ref: https://supabase.com/docs/guides/cli/config
+
+project_id = "sqdqvhjlmdweuuncwlfb"
+
+# Edge Functions
+# Ver: https://supabase.com/docs/guides/functions/deploy#deploy-a-function
+# Usamos verify_jwt=false porque Supabase migro a JWT ES256 (JWKS asimetrico)
+# y la verificacion automatica del gateway solo soporta HS256 legacy.
+# La validacion del JWT la hacemos manualmente dentro de las functions via
+# supabase.auth.getUser() que usa /auth/v1/user (soporta ES256 + HS256).
+# Seguro porque nuestro codigo igual rechaza requests sin user valido.
+
+[functions.ai-extract-operacion]
+verify_jwt = false
+
+[functions.ai-next-question]
+verify_jwt = false
+
+[functions.agent-cumcs]
+verify_jwt = false

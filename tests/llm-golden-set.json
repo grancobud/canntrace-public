@@ -1,0 +1,265 @@
+{
+  "version": "1.0.0",
+  "fecha_creacion": "2026-04-19",
+  "descripcion": "Test dataset golden-set de 50 casos para validar extraccion LLM (CannTrace Fase 1). Cubre los 16 tipos_operacion, aliases de camadas/sistemas, fechas, follow-ups y edge cases. Uso: correr semanalmente con `node tests/run-golden-set.mjs` y comparar accuracy contra baseline. Drift >10% en confianza o accuracy = alerta.",
+  "notas": [
+    "fecha.expected = 'TODAY' se resuelve al dia actual al ejecutar el test",
+    "fecha.expected = 'YESTERDAY' se resuelve a ayer",
+    "fecha.expected = null significa que NO debe llenar fecha",
+    "observaciones_contains es match parcial case-insensitive",
+    "confianza_min es el piso; puede ser mas alto",
+    "follow_up_esperado = true significa que el backend deberia generar follow_up_message"
+  ],
+  "casos": [
+    {
+      "id": "001-esquejado-basico",
+      "input": "carge 50 esquejes C7 coco hoy",
+      "expected": { "tipo_operacion": "esquejado", "cantidad": 50, "camada": "C7", "sistema": "COCO", "fecha": "TODAY", "id_lote": null, "confianza_min": 0.85, "follow_up_esperado": false }
+    },
+    {
+      "id": "002-cosecha-flora2",
+      "input": "cosechamos 120 plantas de la 15 en flora 2 ayer peso verde 45 kilos",
+      "expected": { "tipo_operacion": "cosecha", "cantidad": 120, "camada": "C15", "sistema": "RDWC", "fecha": "YESTERDAY", "id_lote": null, "confianza_min": 0.75, "observaciones_contains": "45", "follow_up_esperado": false }
+    },
+    {
+      "id": "003-trimming-kg",
+      "input": "trimming 4.2kg camada 11 sistema RDWC",
+      "expected": { "tipo_operacion": "trimming", "cantidad": 4.2, "camada": "C11", "sistema": "RDWC", "fecha": null, "confianza_min": 0.7, "follow_up_esperado": false }
+    },
+    {
+      "id": "004-ingreso-insumos-simple",
+      "input": "ingreso 3 kg de fertilizante pro core",
+      "expected": { "tipo_operacion": "ingreso_insumos", "cantidad": 3, "camada": null, "sistema": null, "fecha": "TODAY", "observaciones_contains": "fertilizante", "confianza_min": 0.6 }
+    },
+    {
+      "id": "005-planta-madre",
+      "input": "trasplante de planta madre 25.PM10 a coco hoy",
+      "expected": { "tipo_operacion": "planta_madre", "camada": null, "sistema": "COCO", "fecha": "TODAY", "id_lote": "25.PM10", "confianza_min": 0.6 }
+    },
+    {
+      "id": "006-fertilizacion",
+      "input": "fertilizamos 400 litros pro bloom en flora 1 hoy",
+      "expected": { "tipo_operacion": "fertilizacion", "cantidad": 400, "sistema": "COCO", "fecha": "TODAY", "confianza_min": 0.7 }
+    },
+    {
+      "id": "007-utilizacion-insumos",
+      "input": "use 50 bandejas de coco en veget",
+      "expected": { "tipo_operacion": "utilizacion_insumos", "cantidad": 50, "confianza_min": 0.5 }
+    },
+    {
+      "id": "008-baja-stock",
+      "input": "baja de 10 plantas enfermas C12 hoy",
+      "expected": { "tipo_operacion": "baja_stock", "cantidad": 10, "camada": "C12", "fecha": "TODAY", "confianza_min": 0.6, "observaciones_contains": "enferma" }
+    },
+    {
+      "id": "009-vegetativa",
+      "input": "paso a vegetativa 80 clones del C11",
+      "expected": { "tipo_operacion": "vegetativa", "cantidad": 80, "camada": "C11", "confianza_min": 0.6 }
+    },
+    {
+      "id": "010-poda",
+      "input": "hice poda de 30 plantas camada 9 flora 2",
+      "expected": { "tipo_operacion": "poda", "cantidad": 30, "camada": "C9", "sistema": "RDWC", "confianza_min": 0.6 }
+    },
+    {
+      "id": "011-floracion",
+      "input": "pase a floracion la camada 7 coco hoy",
+      "expected": { "tipo_operacion": "floracion", "camada": "C7", "sistema": "COCO", "fecha": "TODAY", "confianza_min": 0.6 }
+    },
+    {
+      "id": "012-control-plagas",
+      "input": "aplicamos neem en toda flora 2 contra trips",
+      "expected": { "tipo_operacion": "control_plagas", "sistema": "RDWC", "fecha": "TODAY", "observaciones_contains": "neem", "confianza_min": 0.6 }
+    },
+    {
+      "id": "013-secado",
+      "input": "entro a secado la camada 15 cosechada ayer 12kg verde",
+      "expected": { "tipo_operacion": "secado", "camada": "C15", "fecha": "TODAY", "confianza_min": 0.55 }
+    },
+    {
+      "id": "014-cuarentena",
+      "input": "mandamos a cuarentena 3 kg camada 11",
+      "expected": { "tipo_operacion": "cuarentena", "cantidad": 3, "camada": "C11", "confianza_min": 0.6 }
+    },
+    {
+      "id": "015-fraccionamiento",
+      "input": "fraccionamos 69 bolsas de 437 gramos camada 7",
+      "expected": { "tipo_operacion": "fraccionamiento", "cantidad": 69, "camada": "C7", "confianza_min": 0.6, "observaciones_contains": "437" }
+    },
+    {
+      "id": "016-almacenamiento",
+      "input": "almacenamos 30.18 kg camada 7 en rack A",
+      "expected": { "tipo_operacion": "almacenamiento", "cantidad": 30.18, "camada": "C7", "observaciones_contains": "rack", "confianza_min": 0.6 }
+    },
+    {
+      "id": "017-alias-camada-la7",
+      "input": "cosechamos 100 plantas de la 7 hoy",
+      "expected": { "tipo_operacion": "cosecha", "cantidad": 100, "camada": "C7", "fecha": "TODAY", "confianza_min": 0.7 }
+    },
+    {
+      "id": "018-alias-camada-sin-c",
+      "input": "carge 40 esquejes camada 9 coco",
+      "expected": { "tipo_operacion": "esquejado", "cantidad": 40, "camada": "C9", "sistema": "COCO", "confianza_min": 0.7 }
+    },
+    {
+      "id": "019-alias-camada-numero",
+      "input": "cosecha del 12 rdwc 80 plantas",
+      "expected": { "tipo_operacion": "cosecha", "cantidad": 80, "camada": "C12", "sistema": "RDWC", "confianza_min": 0.55 }
+    },
+    {
+      "id": "020-alias-sistema-sfl1",
+      "input": "trimmeamos 5kg camada 16 en sfl1",
+      "expected": { "tipo_operacion": "trimming", "cantidad": 5, "camada": "C16", "sistema": "COCO", "confianza_min": 0.65 }
+    },
+    {
+      "id": "021-alias-sistema-sfl2",
+      "input": "ingreso 200 litros pro grow sfl2",
+      "expected": { "tipo_operacion": "ingreso_insumos", "cantidad": 200, "sistema": "RDWC", "confianza_min": 0.6 }
+    },
+    {
+      "id": "022-alias-sistema-hidro",
+      "input": "cosecha hidroponia camada 11 40 plantas",
+      "expected": { "tipo_operacion": "cosecha", "cantidad": 40, "camada": "C11", "sistema": "RDWC", "confianza_min": 0.55 }
+    },
+    {
+      "id": "023-fecha-explicita-dd-mm",
+      "input": "esquejado 30 esquejes C7 coco el 15/04",
+      "expected": { "tipo_operacion": "esquejado", "cantidad": 30, "camada": "C7", "sistema": "COCO", "fecha": "2026-04-15", "confianza_min": 0.7 }
+    },
+    {
+      "id": "024-fecha-ayer-alias",
+      "input": "antier cosechamos la camada 11 rdwc 90 plantas",
+      "expected": { "tipo_operacion": "cosecha", "cantidad": 90, "camada": "C11", "sistema": "RDWC", "confianza_min": 0.55 }
+    },
+    {
+      "id": "025-con-id-lote",
+      "input": "trimming 8kg lote ALM-C7-RDWC ayer",
+      "expected": { "tipo_operacion": "trimming", "cantidad": 8, "id_lote": "ALM-C7-RDWC", "fecha": "YESTERDAY", "confianza_min": 0.7 }
+    },
+    {
+      "id": "026-con-id-lote-formato-CL",
+      "input": "esquejado clonacion CL11 60 clones hoy",
+      "expected": { "tipo_operacion": "esquejado", "cantidad": 60, "id_lote": "CL11", "fecha": "TODAY", "confianza_min": 0.7 }
+    },
+    {
+      "id": "027-multiple-campos-complejo",
+      "input": "Juan cosecho 63 plantas PETE HOPE C11 flora 2 fresco 22kg el 18/04 codigo 25.SF2.FL1-8.C11",
+      "expected": { "tipo_operacion": "cosecha", "cantidad": 63, "camada": "C11", "sistema": "RDWC", "fecha": "2026-04-18", "confianza_min": 0.7 }
+    },
+    {
+      "id": "028-sin-cantidad-followup",
+      "input": "cosechamos C7 hoy",
+      "expected": { "tipo_operacion": "cosecha", "cantidad": null, "camada": "C7", "fecha": "TODAY", "confianza_min": 0.4, "follow_up_esperado": true }
+    },
+    {
+      "id": "029-sin-camada-followup",
+      "input": "carge 30 esquejes coco ayer",
+      "expected": { "tipo_operacion": "esquejado", "cantidad": 30, "camada": null, "sistema": "COCO", "fecha": "YESTERDAY", "confianza_min": 0.4, "follow_up_esperado": true }
+    },
+    {
+      "id": "030-sin-tipo-ambiguo",
+      "input": "algo raro paso en la sala",
+      "expected": { "tipo_operacion": null, "cantidad": null, "camada": null, "sistema": null, "confianza_min": 0, "confianza_max": 0.3, "follow_up_esperado": true }
+    },
+    {
+      "id": "031-solo-cantidad-ambiguo",
+      "input": "80 plantas",
+      "expected": { "cantidad": 80, "confianza_max": 0.5, "follow_up_esperado": true }
+    },
+    {
+      "id": "032-confianza-baja-confuso",
+      "input": "trabaje con plantas y cosas",
+      "expected": { "confianza_max": 0.3, "follow_up_esperado": true }
+    },
+    {
+      "id": "033-mezcla-camadas",
+      "input": "cosecha parcial C7 y C9 flora 2",
+      "expected": { "tipo_operacion": "cosecha", "sistema": "RDWC", "confianza_max": 0.6, "follow_up_esperado": true }
+    },
+    {
+      "id": "034-numeros-en-texto",
+      "input": "carge 100 esquejes en 2026 en flora 2 camada 15",
+      "expected": { "tipo_operacion": "esquejado", "cantidad": 100, "camada": "C15", "sistema": "RDWC", "confianza_min": 0.6 }
+    },
+    {
+      "id": "035-typo-carge",
+      "input": "cargue 45 esquejes C11 coco hoy",
+      "expected": { "tipo_operacion": "esquejado", "cantidad": 45, "camada": "C11", "sistema": "COCO", "fecha": "TODAY", "confianza_min": 0.75 }
+    },
+    {
+      "id": "036-typo-cortamos",
+      "input": "cortamos 70 plantas C12 hoy",
+      "expected": { "tipo_operacion": "cosecha", "cantidad": 70, "camada": "C12", "fecha": "TODAY", "confianza_min": 0.6 }
+    },
+    {
+      "id": "037-typo-manicuramos",
+      "input": "manicuramos 3kg camada 15",
+      "expected": { "tipo_operacion": "trimming", "cantidad": 3, "camada": "C15", "confianza_min": 0.55 }
+    },
+    {
+      "id": "038-c8-invalida",
+      "input": "cosechamos 50 plantas C8 hoy",
+      "expected": { "tipo_operacion": "cosecha", "cantidad": 50, "camada": null, "confianza_max": 0.6, "follow_up_esperado": true }
+    },
+    {
+      "id": "039-c10-invalida",
+      "input": "esquejado 40 C10 coco",
+      "expected": { "tipo_operacion": "esquejado", "cantidad": 40, "camada": null, "sistema": "COCO", "confianza_max": 0.6, "follow_up_esperado": true }
+    },
+    {
+      "id": "040-cantidad-negativa-invalida",
+      "input": "baja -5 plantas C7",
+      "expected": { "tipo_operacion": "baja_stock", "cantidad": null, "camada": "C7", "confianza_max": 0.6 }
+    },
+    {
+      "id": "041-cantidad-muy-grande",
+      "input": "ingreso 999999 unidades",
+      "expected": { "tipo_operacion": "ingreso_insumos", "cantidad": null, "confianza_max": 0.5 }
+    },
+    {
+      "id": "042-texto-muy-corto-3-chars",
+      "input": "123",
+      "expected": { "confianza_max": 0.2 }
+    },
+    {
+      "id": "043-observaciones-largas",
+      "input": "cosechamos 80 plantas C15 rdwc hoy peso fresco 30kg en buenas condiciones sanitarias sin plagas detectadas responsable Juan Perez lote 25.SF2.FL1-8-C15",
+      "expected": { "tipo_operacion": "cosecha", "cantidad": 80, "camada": "C15", "sistema": "RDWC", "fecha": "TODAY", "observaciones_contains": "30", "confianza_min": 0.75 }
+    },
+    {
+      "id": "044-fecha-sin-anio",
+      "input": "cosechamos 40 plantas C7 el 3 de abril",
+      "expected": { "tipo_operacion": "cosecha", "cantidad": 40, "camada": "C7", "fecha": "2026-04-03", "confianza_min": 0.6 }
+    },
+    {
+      "id": "045-ingles-mezcla",
+      "input": "harvested 50 plants C11 today",
+      "expected": { "tipo_operacion": "cosecha", "cantidad": 50, "camada": "C11", "fecha": "TODAY", "confianza_min": 0.6 }
+    },
+    {
+      "id": "046-variedad-explicita",
+      "input": "cosecha pete hope 60 plantas C7 flora 1 ayer",
+      "expected": { "tipo_operacion": "cosecha", "cantidad": 60, "camada": "C7", "sistema": "COCO", "fecha": "YESTERDAY", "confianza_min": 0.7 }
+    },
+    {
+      "id": "047-varios-sistemas",
+      "input": "fertilizamos flora 1 y flora 2 200 litros pro grow",
+      "expected": { "tipo_operacion": "fertilizacion", "cantidad": 200, "confianza_max": 0.6 }
+    },
+    {
+      "id": "048-punctuacion-cero",
+      "input": "esquejado,C7,coco,hoy,45",
+      "expected": { "tipo_operacion": "esquejado", "cantidad": 45, "camada": "C7", "sistema": "COCO", "fecha": "TODAY", "confianza_min": 0.5 }
+    },
+    {
+      "id": "049-caps",
+      "input": "COSECHAMOS 75 PLANTAS C11 RDWC HOY",
+      "expected": { "tipo_operacion": "cosecha", "cantidad": 75, "camada": "C11", "sistema": "RDWC", "fecha": "TODAY", "confianza_min": 0.75 }
+    },
+    {
+      "id": "050-tipo-ambiguo-multiple",
+      "input": "trimming y secado juntos de C15 hoy",
+      "expected": { "confianza_max": 0.6, "follow_up_esperado": true }
+    }
+  ]
+}
