@@ -1,14 +1,17 @@
 name: E2E Smoke Tests
 
+# Estos tests corren contra una instalacion desplegada. Este repositorio es la
+# version publica de un sistema que se desarrollo y nunca llego a implementarse:
+# no hay una URL viva contra la cual correrlos. Por eso el workflow es manual y
+# pide la direccion a mano, en vez de fallar todos los dias contra un dominio
+# que ya no resuelve.
 on:
-  push:
-    branches: [master]
-  pull_request:
-    branches: [master]
-  schedule:
-    # Diario a las 06:00 UTC (03:00 ARG) - detecta regresiones de producto
-    - cron: '0 6 * * *'
   workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'URL de la instalacion a testear (ej: https://mi-instancia.pages.dev)'
+        required: true
+        type: string
 
 jobs:
   e2e:
@@ -32,9 +35,9 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium webkit
 
-      - name: Run smoke tests (contra prod)
+      - name: Run smoke tests
         env:
-          E2E_BASE_URL: https://canntrace.pages.dev
+          E2E_BASE_URL: ${{ inputs.base_url }}
         run: npm run test:e2e
 
       - name: Upload report

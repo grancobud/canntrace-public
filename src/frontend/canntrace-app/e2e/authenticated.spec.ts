@@ -21,6 +21,10 @@ async function login(page: any) {
 }
 
 test.describe('Flows autenticados', () => {
+  // Sin credenciales no se corren: estos tests hacen login real contra produccion.
+  // En el repo publico eso es lo esperado. Para correrlos, exportar E2E_ADMIN_PASSWORD.
+  test.skip(!ADMIN_PASS, 'E2E_ADMIN_PASSWORD no configurado - se omiten los tests autenticados')
+
   // Solo chromium - skip mobile safari para estos tests que son pesados
   test.skip(({ browserName }) => browserName !== 'chromium', 'solo chromium')
 
